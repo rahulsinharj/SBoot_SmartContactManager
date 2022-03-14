@@ -30,7 +30,7 @@ public class HomeController {
 	{
 		model.addAttribute("user", new User());
 		return "signup";
-	}
+	} 
 	
 	@PostMapping("/do-register")
 	public String registerUser(@ModelAttribute("user") User user, 
@@ -39,7 +39,8 @@ public class HomeController {
 	{
 		System.out.println("Agreement : "+agreementCheck);
 		System.out.println("USER : "+user);
-
+		model.addAttribute("user" , user);
+		
 		return "signup";
 	}
 	
