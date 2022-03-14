@@ -1,5 +1,6 @@
 package smartmg.controller;
 
+import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,18 +26,20 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/signup") 
-	public String signup() 
+	public String signup(Model model) 
 	{
+		model.addAttribute("user", new User());
 		return "signup";
 	}
 	
 	@PostMapping("/do-register")
 	public String registerUser(@ModelAttribute("user") User user, 
-								@RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
+								@RequestParam(value = "agreementCheck", defaultValue = "false") boolean agreementCheck,
 								Model model) 
 	{
-		System.out.println("Agreement : "+agreement);
+		System.out.println("Agreement : "+agreementCheck);
 		System.out.println("USER : "+user);
+
 		return "signup";
 	}
 	

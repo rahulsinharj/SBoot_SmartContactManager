@@ -18,18 +18,18 @@
 						<h1 class="text-center d-inline offset-1 ">Register Here !!</h1>
 						<div id="emailHelp" class="form-text text-center">We'll never share your personal details with anyone else.</div>
 						
-						<form th:action="@{/do-register}" method="post">
+						<form th:action="@{/do-register}" method="post" th:object="${user}">
 						
 							<div class="mb-2">
 							    <label for="name_field" class="form-label">Your Name</label>
-							    <input type="text" class="form-control" id="name_field" name="name" required
-							     		placeholder="Enter your name here"  aria-describedby="emailHelp">
+							    <input type="text" th:value="${user.name}" class="form-control" id="name_field" name="name" required
+							     		placeholder="Enter your name here" aria-describedby="emailHelp">
 							</div>
 							
 							<div class="mb-2">
 							    <label for="email_field" class="form-label">Your Email address</label>
-							    <input type="email" class="form-control" id="email_field" name="email" required
-							    		placeholder="Enter your email here"  aria-describedby="emailHelp">
+							    <input type="email" th:value="${user.email}" class="form-control" id="email_field" name="email" required
+							    		placeholder="Enter your email here" aria-describedby="emailHelp">
 							</div>
 							
 							<div class="mb-2">
@@ -41,7 +41,7 @@
 							
 							<div class="mb-2 form-group">
   								<label for="about_field" class="form-label">About you</label>
-  								<textarea name="about" placeholder="Enter something about yourself" required
+  								<textarea name="about" th:value="${user.about}" placeholder="Enter something about yourself" required
   										id="about_field" rows="5" class="form-control"></textarea>
   							</div>
 							
