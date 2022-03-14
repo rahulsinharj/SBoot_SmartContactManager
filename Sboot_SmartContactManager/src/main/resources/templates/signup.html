@@ -9,46 +9,52 @@
 	<section>
 		<div class="container">
 			<div class="row justify-content-center">
-				<div class="col-lg-8">
+				<div class="col-lg-7">
 					
-					<div class="mycard rounded">
-						<h1 class="text-center">Register Here !!</h1>
+					<div class="mycard mt-3 rounded">
+					
+						<img class="offset-md-1" style="width: 75px" th:src="@{/img/membership.png}" alt="" />
+					
+						<h1 class="text-center d-inline offset-1 ">Register Here !!</h1>
 						<div id="emailHelp" class="form-text text-center">We'll never share your personal details with anyone else.</div>
 						
 						<form th:action="@{/do-register}" method="post">
 						
 							<div class="mb-2">
 							    <label for="name_field" class="form-label">Your Name</label>
-							    <input type="text" class="form-control" id="name_field" name="name"
-							     		placeholder="Enter your name here" aria-describedby="emailHelp">
+							    <input type="text" class="form-control" id="name_field" name="name" required
+							     		placeholder="Enter your name here"  aria-describedby="emailHelp">
 							</div>
 							
 							<div class="mb-2">
 							    <label for="email_field" class="form-label">Your Email address</label>
-							    <input type="email" class="form-control" id="email_field" name="email"
-							    		placeholder="Enter your email here" aria-describedby="emailHelp">
+							    <input type="email" class="form-control" id="email_field" name="email" required
+							    		placeholder="Enter your email here"  aria-describedby="emailHelp">
 							</div>
 							
 							<div class="mb-2">
 								<label for="password_field" class="form-label">Your Password</label>
-							    <input type="password" class="form-control" id="password_field" 
+							    <input type="password" class="form-control" id="password_field" required
 							    		placeholder="Enter your password here" name="password">
 							</div>
 							
 							
 							<div class="mb-2 form-group">
   								<label for="about_field" class="form-label">About you</label>
-  								<textarea name="about" placeholder="Enter something about yourself" 
-  										id="about_field" rows="6" class="form-control"></textarea>
+  								<textarea name="about" placeholder="Enter something about yourself" required
+  										id="about_field" rows="5" class="form-control"></textarea>
   							</div>
 							
-							
-							<div class="mb-2 form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
-							    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  						
+							<div class="mb-2 form-check form-group d-flex justify-content-center">
+								<input type="checkbox" class="form-check-input" id="agreementCheck" name="agreementCheck" required> &nbsp; 
+								<label class="form-check-label" for="agreementCheck">Accept terms and conditions</label>
 							</div>
 							
-							<button type="submit" class="btn bg-primary text-white">Submit</button>
+							<div class="container text-center">
+								<button type="submit" class="btn bg-primary text-white">Submit</button> &nbsp;
+								<button type="reset" class="btn btn-secondary">Reset</button>
+							</div>
 							
 						</form>
 						
