@@ -5,13 +5,19 @@
 	<title>Register - Smart Contact Manager</title>
 </head>
 <body>
-	
+	 
 	<section>
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-lg-7">
 					
 					<div class="mycard mt-3 rounded">
+					
+						<div style="height:8vh;" th:if="${session.message}" th:classappend="${session.message.type}" class="alert-dismissible fade show alert" role="alert">
+						 	<p class="text-center" th:text="${session.message.content}"></p>
+						 	<th:block th:text="${#session.removeAttribute('message')}"></th:block>
+						 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
 					
 						<img class="offset-md-1" style="width: 75px" th:src="@{/img/membership.png}" alt="" />
 					
@@ -23,25 +29,31 @@
 							<div class="mb-2">
 							    <label for="name_field" class="form-label">Your Name</label>
 							    <input type="text" th:value="${user.name}" class="form-control" id="name_field" name="name" required
-							     		placeholder="Enter your name here" aria-describedby="emailHelp">
+							     	 	th:classappend="${#fields.hasErrors('name')}?'is-invalid':''" placeholder="Enter your name here" aria-describedby="emailHelp">
+							     
+							     <div class="invalid-feedback" th:each="e : ${#fields.errors('name')}" th:text="${e}"></div>	
 							</div>
 							
 							<div class="mb-2">
 							    <label for="email_field" class="form-label">Your Email address</label>
 							    <input type="email" th:value="${user.email}" class="form-control" id="email_field" name="email" required
-							    		placeholder="Enter your email here" aria-describedby="emailHelp">
+							    		th:classappend="${#fields.hasErrors('email')}?'is-invalid':''" placeholder="Enter your email here" aria-describedby="emailHelp">
+							
+								<div class="invalid-feedback" th:each="e : ${#fields.errors('email')}" th:text="${e}"></div>
 							</div>
 							
 							<div class="mb-2">
 								<label for="password_field" class="form-label">Your Password</label>
-							    <input type="password" class="form-control" id="password_field" required
-							    		placeholder="Enter your password here" name="password">
+							    <input type="password" class="form-control" id="password_field" name="password" required
+							    		th:classappend="${#fields.hasErrors('password')}?'is-invalid':''" placeholder="Enter your password here">
+							
+								<div class="invalid-feedback" th:each="e : ${#fields.errors('password')}" th:text="${e}"></div>
 							</div>
 							
 							
 							<div class="mb-2 form-group">
   								<label for="about_field" class="form-label">About you</label>
-  								<textarea name="about" th:value="${user.about}" placeholder="Enter something about yourself" required
+  								<textarea name="about" th:text="${user.about}" placeholder="Enter something about yourself" required
   										id="about_field" rows="5" class="form-control"></textarea>
   							</div>
 							

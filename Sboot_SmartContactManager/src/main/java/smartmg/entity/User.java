@@ -11,6 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "user_Entries")
@@ -20,12 +24,18 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@NotBlank(message = "Name field is required !")
+	@Size(min = 3 , max = 20 , message = "Name should be between 3-20 characters !")
 	private String name;
 	
+	@Email(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Must be a valid email expression !")
 	@Column(unique = true)
 	private String email;
 	
+	@NotBlank(message = "Name field is required !")
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$" , message = "Invalid Password pattern! Password must contain 8 to 20 characters at least one digit, lower, upper case and one special character." )
 	private String password;
+	
 	private String role;
 	private boolean enabled;
 	private String imageUrl;
