@@ -33,7 +33,8 @@ public class User {
 	private String email;
 	
 	@NotBlank(message = "Name field is required !")
-	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$" , message = "Invalid Password pattern! Password must contain 8 to 20 characters at least one digit, lower, upper case and one special character." )
+	@Size(min = 7 , message = "Password should be between 7-20 characters !")
+//	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$" , message = "Invalid Password pattern! Password must contain 8 to 20 characters at least one digit, lower, upper case and one special character." )
 	private String password;
 	
 	private String role;
