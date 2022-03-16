@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity				// isse SpringSecurity ki sari configurations enable hojaye.
-public class MyConfig extends WebSecurityConfigurerAdapter  {				// Yaha pe hum ye batayege ki kaun se URL pattern ko protect karna hai ::
+public class SecurityConfig extends WebSecurityConfigurerAdapter  {				// Yaha pe hum ye batayege ki kaun se URL pattern ko protect karna hai ::
 
 	@Bean
 	public UserDetailsService getUserDetailsService() {
@@ -20,16 +20,17 @@ public class MyConfig extends WebSecurityConfigurerAdapter  {				// Yaha pe hum 
 	}
 	
 	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
+	public BCryptPasswordEncoder getPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
 	@Bean
-	public DaoAuthenticationProvider authenticationProvider() 
+	public DaoAuthenticationProvider getDaoAuthenticationProvider() 
 	{
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		
 		daoAuthenticationProvider.setUserDetailsService(this.getUserDetailsService());
-		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
+		daoAuthenticationProvider.setPasswordEncoder(this.getPasswordEncoder());
 		
 		return daoAuthenticationProvider;
 	}
@@ -37,13 +38,15 @@ public class MyConfig extends WebSecurityConfigurerAdapter  {				// Yaha pe hum 
 	
 	/* Configuring method ::
 	-------------------------
-	 	Builder ko hame batana hota hai ki hamlog kis tarh ka authentication use kar rahe hai ::																														
-		whether DataBase authentication we are using, or in-memory Authentication => waisa hi method yaha pe call karna hoga.
+	 	Builder ko hame batana hota hai ki hamlog kis tarah ka authentication use kar rahe hai ::																														
+		whether we are using :	1. DataBase authentication , or
+		 					 	2. In-memory Authentication  
+		 =>	waisa hi method yaha pe call karna hoga.
 	*/
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception 
 	{
-		auth.authenticationProvider(this.authenticationProvider());			
+		auth.authenticationProvider(this.getDaoAuthenticationProvider());			
 	}
 
 	
