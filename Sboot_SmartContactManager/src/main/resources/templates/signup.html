@@ -11,7 +11,7 @@
 			<div class="row justify-content-center">
 				<div class="col-lg-7">
 					
-					<div class="mycard mt-3 rounded">
+					<div class="mycard mt-3 rounded shadow-lg">
 					
 						<div style="height:8vh;" th:if="${session.message}" th:classappend="${session.message.type}" class="alert-dismissible fade show alert" role="alert">
 						 	<p class="text-center" th:text="${session.message.content}"></p>
@@ -28,7 +28,7 @@
 						
 							<div class="mb-2">
 							    <label for="name_field" class="form-label">Your Name</label>
-							    <input type="text" th:value="${user.name}" class="form-control" id="name_field" name="name" required
+							    <input type="text" th:value="${user.name}" class="form-control" id="name_field" name="name" required autofocus
 							     	 	th:classappend="${#fields.hasErrors('name')}?'is-invalid':''" placeholder="Enter your name here" aria-describedby="emailHelp">
 							     
 							     <div class="invalid-feedback" th:each="e : ${#fields.errors('name')}" th:text="${e}"></div>	
@@ -54,7 +54,7 @@
 							<div class="mb-2 form-group">
   								<label for="about_field" class="form-label">About you</label>
   								<textarea name="about" th:text="${user.about}" placeholder="Enter something about yourself" required
-  										id="about_field" rows="5" class="form-control"></textarea>
+  										id="about_field" rows="4" class="form-control"></textarea>
   							</div>
 							
   						

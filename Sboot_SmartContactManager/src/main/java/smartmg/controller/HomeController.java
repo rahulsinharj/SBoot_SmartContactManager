@@ -38,6 +38,12 @@ public class HomeController {
 		return "about";
 	}
 	
+	@RequestMapping("/login")
+	public String customLogin()
+	{
+		return "login";
+	}
+	
 	@RequestMapping("/signup") 
 	public String signup(Model model) 
 	{

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::title},~{::section})">
+<!-- Iska matlab ki "base.html" me iss "home.html" ka "section" wala portion bhej rahe hai  -->
+<head>
+<meta charset="ISO-8859-1">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<title>LOGIN Page - Smart Contact Manager</title>
+</head>
+<body>
+
+	<section class="h-100">
+		<div class="container h-100">
+			<div class="row justify-content-sm-center h-100">
+				<div class="col-lg-6 col-md-7 col-sm-9">
+					<div class="card shadow-lg m-3">
+						<div class="card-body p-5">
+							
+							<form method="POST" th:action="@{/login}" class="needs-validation" autocomplete="on">
+							
+								<h1 class="fs-4 card-title fw-bold mb-4 text-center">Login</h1>
+							
+								<div th:if="${param.error}" class="alert alert-danger">
+									Invalid username and password !
+								</div>
+			 					 
+								<div th:if="${param.logout}" class="alert alert-success">
+									You have been loggout !
+								</div>
+								
+								<div class="mb-3 mt-3">
+									<label class="mb-2 text-muted" for="username">E-Mail Address</label>
+									<input id="username" type="email" class="form-control" name="username" value="" required autofocus>
+									<div class="invalid-feedback">
+										Email is invalid
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<div class="mb-2 w-100">
+										<label class="text-muted" for="password">Password</label>
+									</div>
+									<input id="password" type="password" class="form-control" name="password" required>
+								    <div class="invalid-feedback">
+								    	Password is required
+							    	</div>
+								</div>
+
+								<div class="text-center">
+									<button type="submit" class="btn bg-primary text-white">
+										Login
+									</button>
+								</div>
+							</form>
+						</div>
+						<div class="card-footer py-1 border-0">
+							<div class="text-center">
+								Don't have an account? <a href="/signup" class="text-dark">Create One</a>
+							</div>
+						</div>
+					</div>
+					<div class="text-center mt-5 text-muted">
+						Copyright &copy; 2017-2021 &mdash; Your Company Name
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

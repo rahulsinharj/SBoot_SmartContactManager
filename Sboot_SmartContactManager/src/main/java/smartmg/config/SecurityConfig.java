@@ -59,8 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {				// Yaha p
 	{
 		http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
 								.antMatchers("/user/**").hasRole("USER")
-								.antMatchers("/**").permitAll().and().formLogin().and().csrf().disable();
-		
+								.antMatchers("/**").permitAll().and().formLogin().loginPage("/login")
+								.and().csrf().disable();
 	}
 	
 }
