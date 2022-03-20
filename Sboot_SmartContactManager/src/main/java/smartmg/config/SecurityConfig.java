@@ -20,24 +20,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {				// Yaha p
 	}
 	
 	@Bean
-	public BCryptPasswordEncoder getPasswordEncoder() {
+	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
 	@Bean
-	public DaoAuthenticationProvider getDaoAuthenticationProvider() 
+	public DaoAuthenticationProvider daoAuthenticationProvider() 
 	{
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 		
 		daoAuthenticationProvider.setUserDetailsService(this.getUserDetailsService());
-		daoAuthenticationProvider.setPasswordEncoder(this.getPasswordEncoder());
+		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
 		
 		return daoAuthenticationProvider;
 	}
 
 	
-	/* Configuring method ::
-	-------------------------
+/* Configuring method ::
+   -------------------------
 	 	Builder ko hame batana hota hai ki hamlog kis tarah ka authentication use kar rahe hai ::																														
 		whether we are using :	1. DataBase authentication , or
 		 					 	2. In-memory Authentication  
@@ -46,21 +46,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {				// Yaha p
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception 
 	{
-		auth.authenticationProvider(this.getDaoAuthenticationProvider());			
+		auth.authenticationProvider(this.daoAuthenticationProvider());			
 	}
 
 	
-	/* Configuring Route method ::
-	-------------------------
-	 	Iss method se hamlog spring security ko ye batayege ki aap sare routs protect mat karo, jo humlog specifically bata rahe hai, bas usko protect karo.
+/* Configuring Route method ::
+   -------------------------
+	 	Iss method se hamlog spring security ko ye batayege ki aap sare URL-routes protect mat karo, jo humlog specifically bata rahe hai, bas usko protect karo.
 	*/
 	@Override
 	protected void configure(HttpSecurity http) throws Exception 
 	{
 		http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
 								.antMatchers("/user/**").hasRole("USER")
-								.antMatchers("/**").permitAll().and().formLogin().loginPage("/login")
+								.antMatchers("/**").permitAll()
+								.and().formLogin().loginPage("/login")
 								.and().csrf().disable();
 	}
 	
-}
+} 
