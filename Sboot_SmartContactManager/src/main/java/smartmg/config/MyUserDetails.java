@@ -9,15 +9,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import smartmg.entity.User;
 
-public class CustomUserDetails implements UserDetails {
+public class MyUserDetails implements UserDetails {
 
-	private User user;
+	private User user;						// we won't autowire it, kyuki iska user instance ka obj hum khud bhejege "MyUserDetailsService" class se. 
 	
-	public CustomUserDetails(User user) {
+	public MyUserDetails(User user) {
 		super();
 		this.user = user;
 	}
-	public CustomUserDetails() {
+	public MyUserDetails() {
 		super();
 	}
 

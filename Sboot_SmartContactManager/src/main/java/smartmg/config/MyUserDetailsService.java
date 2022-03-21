@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import smartmg.dao.UserRepository;
 import smartmg.entity.User;
 
-public class UserDetailsServiceImpl implements UserDetailsService{
+@Service
+public class MyUserDetailsService implements UserDetailsService{
 
 	@Autowired
 	private UserRepository userRepository;
@@ -17,12 +19,13 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		// Fetching User from Database ::
-		User user = this.userRepository.getUserByUserName(username);
+//		User user = this.userRepository.getUserByUserEmail(username);
+		User user = this.userRepository.findByEmail(username);
 		
 		if(user==null) {
 			throw new UsernameNotFoundException("Could not found User !!");
 		}
-		CustomUserDetails userDetails =  new CustomUserDetails(user);
+		MyUserDetails userDetails =  new MyUserDetails(user);
  		
 		return userDetails;
 	}

@@ -10,6 +10,10 @@ import smartmg.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-	@Query("select u from User u where u.email = :email")
-	public User getUserByUserName(@Param("email") String email);
+	public User findByEmail(String email);
+	
+//	@Query("select u from User u where u.email = :email")				// We can also find User by email through HQL query on custom-method  
+//	public User getUserByUserEmail(@Param("email") String email);
+	
+	
 }
