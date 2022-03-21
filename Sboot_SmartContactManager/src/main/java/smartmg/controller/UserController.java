@@ -25,8 +25,9 @@ public class UserController {
 		
 //		User user = userRepository.getUserByUserEmail(loginUserName);
 		User user = userRepository.findByEmail(loginUserName);
-		System.out.println("USER Name : "+user.getName());
 		System.out.println("USER info : "+user);
+		
+		model.addAttribute(user);
 		
 		return "normal/user_dashboard";				// that means template folder ke inside >> "normal" folder ke andar "user_dashboard.html" milega 
 	}
