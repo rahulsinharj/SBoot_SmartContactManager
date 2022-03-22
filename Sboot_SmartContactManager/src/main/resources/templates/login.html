@@ -19,7 +19,7 @@
 							
 							<form method="POST" th:action="@{/dologin}" class="needs-validation" autocomplete="on">
 							
-								<h1 class="fs-4 card-title fw-bold mb-4 text-center">Login</h1>
+								<h1 class="fs-4 card-title fw-bold mb-4 text-center">LOGIN !</h1>
 							
 								<div th:if="${param.error}" class="alert alert-danger">
 									Invalid username and password !
@@ -48,7 +48,7 @@
 								</div>
 
 								<div class="text-center">
-									<button type="submit" class="btn bg-primary text-white">
+									<button type="submit" class="btn bg-primary text-white" title="Login !">
 										Login
 									</button>
 								</div>
@@ -56,7 +56,7 @@
 						</div>
 						<div class="card-footer py-1 border-0">
 							<div class="text-center">
-								Don't have an account? <a href="/signup" class="text-dark">Create One</a>
+								Don't have an account? <a href="/signup" class="text-dark" title="Create a new User account !">Create One</a>
 							</div>
 						</div>
 					</div>
