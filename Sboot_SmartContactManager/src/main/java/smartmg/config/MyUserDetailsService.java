@@ -23,7 +23,7 @@ public class MyUserDetailsService implements UserDetailsService{
 		User user = this.userRepository.findByEmail(username);
 		
 		if(user==null) {
-			throw new UsernameNotFoundException("Could not found User !!");
+			throw new UsernameNotFoundException(" Could not found User : "+username);
 		}
 		MyUserDetails userDetails =  new MyUserDetails(user);
  		

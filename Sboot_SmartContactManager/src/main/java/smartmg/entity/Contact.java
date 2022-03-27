@@ -20,7 +20,7 @@ public class Contact {
 	private String secondName;
 	private String work;
 	private String email; 
-	private int phone;
+	private long phone;
 	private String image;
 	
 	@Column(length = 1000)
@@ -33,7 +33,7 @@ public class Contact {
 		super();
 	}
 	
-	public Contact(int cId, String name, String secondName, String work, String email, int phone, String image,
+	public Contact(int cId, String name, String secondName, String work, String email, long phone, String image,
 			String description, User user) {
 		super();
 		this.cId = cId;
@@ -77,10 +77,10 @@ public class Contact {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getPhone() {
+	public long getPhone() {
 		return phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(long phone) {
 		this.phone = phone;
 	}
 	public String getImage() {

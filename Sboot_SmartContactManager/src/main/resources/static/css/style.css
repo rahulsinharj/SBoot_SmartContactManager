@@ -8,7 +8,7 @@ body{
 
 .banner{
 	width : 100%;
-	height : 91.7vh;
+	height : 92.5vh;	/* 91.7vh;  */
 	background : linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)) , url(../img/banner1.jpg);
 	background-size : cover;
 	background-attachment: fixed; 
@@ -47,6 +47,7 @@ body{
 	height : 100%;
 	position : fixed;
 	padding-top: 45px;
+	z-index: 999999999999999999999999999;
 	 
 }
 
@@ -62,7 +63,7 @@ body{
 	background: #e2e2e2;
 }
 
-.sidbar .divider{
+.divider{
 	height : .5px;
 	width : 100%;
 	background: #e2e2e2;

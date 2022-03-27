@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {				// Yaha p
 								.loginProcessingUrl("/dologin")				// loginProcessingUrl() - is the URL to submit the username and password, isse hum wo URL bayatege jis URL pe hum username&password credentials ko bhej rahe hai.		
 								.defaultSuccessUrl("/user/index")			// defaultSuccessUrl() - is the landing page after a successful login.
 //								.failureUrl("/loginfail")					// failureUrl() - is the landing page after an unsuccessful login
-								.and().csrf().disable();
+								.and().csrf().disable();					// For disabling this we should mention this line inside login page : <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 	}
 	
 } 
