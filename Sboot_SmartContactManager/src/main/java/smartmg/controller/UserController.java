@@ -6,12 +6,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import smartmg.dao.ContactRepository;
 import smartmg.dao.UserRepository;
 import smartmg.entity.Contact;
 import smartmg.entity.User;
@@ -32,33 +33,40 @@ import smartmg.helper.ResponseMessage;
 public class UserController {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	
+	@Autowired
+	private ContactRepository contactRepository;
 	
 	private int imgcount;
 	
-	// Method for adding common data to response
+// Method for adding common data to response
+	
 	@ModelAttribute
 	public void addCommonData(Model model, Principal principal)
 	{
 		String loginUserName = principal.getName();				// Get the user(user email) through Principal obj
 		System.out.println("USER Email : "+ loginUserName);
 		
-//		User user = userRepository.getUserByUserEmail(loginUserName);
+	//	User user = userRepository.getUserByUserEmail(loginUserName);
 		User user = userRepository.findByEmail(loginUserName);
-		System.out.println("USER info : "+user);
 		
-		model.addAttribute(user);
+		System.out.println("USER Info : " + user);
+		model.addAttribute("user", user);			// By this line, "user" obj will be accessible in all user/index html pages 
 	}
 	
-	// Dashboard home
+	
+// Dashboard home
+	
 	@RequestMapping("/index")
 	public String dashboard()
 	{
 		return "normal/user_dashboard";				// that means template folder ke inside >> "normal" folder ke andar "user_dashboard.html" milega 
 	}
 	
-	// Open Add Form Handler ::
+	
+// Open Add Form Handler ::
+	
 	@GetMapping("/add-contact")
 	public String openAddContactForm(Model model) 
 	{
@@ -66,7 +74,9 @@ public class UserController {
 		return "normal/add_contact_form";
 	}
 	
-	// Processing AddContact Form ::
+	
+// Processing AddContact Form ::
+	
 	@PostMapping("process-contact")
 	public String processContact(@Valid @ModelAttribute("contact") Contact contact,  BindingResult result,
 								 @RequestParam("profileImage") MultipartFile imgfile,  
@@ -79,15 +89,15 @@ public class UserController {
 			User onuser = this.userRepository.findByEmail(onuserEmail);
 			contact.setUser(onuser);
 			
-			// processing and uploading file
+// processing and uploading file
 			if(imgfile.isEmpty()) {
 				System.out.println("Image file is empty !");
 			}
 			else 
 			{
-//				contact.setImage(imgfile.getOriginalFilename());
+			//	contact.setImage(imgfile.getOriginalFilename());
 				
-				// Appending "imgcount" after the filename before the .jpeg extension.
+// Appending "imgcount" after the filename before the .jpeg extension.
 				imgcount++;
 				String tempName = imgfile.getOriginalFilename();
 				String imageFileType = tempName.substring(tempName.indexOf("."));
@@ -106,7 +116,7 @@ public class UserController {
 				
 				final String UPLOAD_IMG_DIR = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
 				
-//				Path imgSavePath = Paths.get(UPLOAD_IMG_DIR + File.separator + imgfile.getOriginalFilename());
+			//	Path imgSavePath = Paths.get(UPLOAD_IMG_DIR + File.separator + imgfile.getOriginalFilename());
 				Path imgSavePath = Paths.get(UPLOAD_IMG_DIR + File.separator + imageFileName);
 						System.out.println("imgSavePath : " + imgSavePath);			//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\src\main\resources\static\img\baloon.jpeg
 						
@@ -118,7 +128,7 @@ public class UserController {
 				
 				System.out.println(contact.getName() +" has been added to DataBase");
 				// Message Success
-				session.setAttribute("message", new ResponseMessage("Contact Name : " +contact.getName() +" Successfully Added !! ", "alert-success"));
+				session.setAttribute("message", new ResponseMessage("Contact Name : " +contact.getName() +" is Successfully Added !! ", "alert-success"));
 				
 			}
 		} 
@@ -131,6 +141,24 @@ public class UserController {
 		return "normal/add_contact_form";
 	}
 	
+// Show Contact Form
 	
+	@GetMapping("/view-contacts") 
+	public String viewContacts(Model model, Principal principal)
+	{
+		// Contacts ki list ko bhejni hai ::
+		
+		String onuserEmail = principal.getName();
+		User onuser = this.userRepository.findByEmail(onuserEmail);
+
+	//	List<Contact> contacts = onuser.getContacts();
+
+		List<Contact> contacts = this.contactRepository.findContactsByUser(onuser.getId());
+		
+		model.addAttribute("contacts", contacts);	// Sending this model to "view_contact.html" page.
+			
+		
+		return "normal/view_contacts";
+	}
 	
 }

@@ -1,5 +1,7 @@
 package smartmg.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -40,9 +42,14 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/login")
-	public String customLogin()
+	public String customLogin(Principal principal)
 	{
-		return "login";
+		if(principal!=null) {				// Checking whether any loggedin-User is in memory of Principal obj.
+			return "redirect:/user/index";
+		}
+		else {
+			return "login";
+		}
 	}
 	
 	@RequestMapping("/signup") 

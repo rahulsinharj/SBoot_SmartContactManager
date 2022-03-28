@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="/normal/userbase::layout(~{::title},~{::section})">
+<!-- Iska matlab ki "base.html" me iss "home.html" ka "section" wala portion bhej rahe hai  -->
+<head>
+<meta charset="ISO-8859-1">
+<title>Show Contacts</title>
+</head>
+<body>
+
+	<section>
+
+		<div class="card mx-1">
+			<div class="card-body">
+				<h1 class="text-center">View All Contacts</h1>
+
+				<div class="table-responsive">
+					<table
+						class="table table-hover"> 		<!-- table-bordered ,  table-success , table-striped   -->
+						<thead>
+							<tr class="table-success">
+								<th scope="col">#ID</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Phone</th>
+								<th scope="col">Work</th>
+								<th scope="col">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="c : ${contacts}">
+								<th scope="row" th:text="${'CT'+c.cId}">1</th>
+								<td th:text="${c.name}"></td>
+								<td th:text="${c.email}"></td>
+								<td th:text="${c.phone}"></td>
+								<td th:text="${c.work}"></td> 
+								<td>
+									<!-- <button class="btn btn-danger btn-sm">Delete</button>
+									<button class="btn btn-warning btn-sm">Update</button> -->
+									
+									<a href="#"><i class="fas fa-trash text-danger" style="font-size: 29px;"></i></a>
+									<a href="#"><i class="fas fa-pen-nib text-success" style="font-size: 29px;"></i></a>
+							
+								</td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+
+
+
+
+	</section>
+
+
+</body>
+</html>
