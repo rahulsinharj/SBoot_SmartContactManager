@@ -22,7 +22,7 @@
 </head>
 <body>
 	<!-- This is NAV BAR :: -->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
 		<div class="container-fluid">
 			<a class="navbar-brand" th:href="@{/home}">Smart Contact Manager</a>
 			<button class="navbar-toggler" type="button" 
@@ -47,7 +47,7 @@
 	<!-- End of NAV BAR -->
 
 	<!-- This is SideBar :: a.item*5  -->
-	<div class="sidebar">
+	<div class="sidebar mt-2">
 		<span onclick="toggleSidebar()" class="crossBtn" >&times;</span>
 		
 		<a th:href="@{/user/index}" class="item"><i class="fas fa-home"></i> User Home</a>
@@ -61,9 +61,19 @@
 	
 
 	<!-- This is Content Area :: -->
-	<div class="content">
+	<div class="content mt-5 rounded">
 	
 		<i onclick="toggleSidebar()" class="fas fa-bars m-3" ></i>
+		
+		<!-- Response Message  -->
+		<div class="container">
+			<div style="height:8vh;" th:if="${session.message}" th:classappend="${session.message.type}" class="alert-dismissible fade show alert rounded" role="alert">
+				<p class="text-center" th:text="${session.message.content}"></p>
+				<th:block th:text="${#session.removeAttribute('message')}"></th:block>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		
 		
 		<div th:replace="${content}"></div> 
 	</div>
