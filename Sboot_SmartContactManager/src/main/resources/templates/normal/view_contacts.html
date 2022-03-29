@@ -29,8 +29,13 @@
 						</thead>
 						<tbody>
 							<tr th:each="c : ${contacts}">
-								<th scope="row" th:text="${'CT'+c.cId}">1</th>
-								<td th:text="${c.name}"></td>
+								<th scope="row" th:text="${'CT' + c.cId}">1</th>
+								<td> 
+									<a th:href="@{'/user/contact/' + ${c.cId}}" style="text-decoration:none; color:gray;">
+										<img th:src="@{'/img/' + ${c.image}}" alt="" style="height:30px; width:30px; border-radius:80%;" />
+										<span th:text="${c.name}" onmouseover="this.style.color='limegreen'" onmouseout="this.style.color='grey'"></span>
+									</a>
+								</td>
 								<td th:text="${c.email}"></td>
 								<td th:text="${c.phone}"></td>
 								<td th:text="${c.work}"></td> 

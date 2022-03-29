@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -91,15 +92,16 @@ public class UserController {
 			User onuser = this.userRepository.findByEmail(onuserEmail);
 			contact.setUser(onuser);
 			
-// processing and uploading file
+	// processing and uploading file
 			if(imgfile.isEmpty()) {
 				System.out.println("Image file is empty !");
+				contact.setImage("contact.jpg");
 			}
 			else 
 			{
 			//	contact.setImage(imgfile.getOriginalFilename());
 				
-// Appending "imgcount" after the filename before the .jpeg extension.
+	// Appending "imgcount" after the filename before the .jpeg extension.
 				imgcount++;
 				String tempName = imgfile.getOriginalFilename();
 				String imageFileType = tempName.substring(tempName.indexOf("."));
@@ -109,30 +111,32 @@ public class UserController {
 				contact.setImage(imageFileName);
 				
 				
-/*				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
+				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
 						System.out.println("uploadFilePath : " +uploadFilePath);
 				
-				Path imgSavePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator+imgfile.getOriginalFilename());
+				Path imgSavePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + imageFileName);
 						System.out.println("imgSavePath : " +imgSavePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
-*/				
 				
-				final String UPLOAD_IMG_DIR = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
+				
+/*				final String UPLOAD_IMG_DIR = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
 				
 			//	Path imgSavePath = Paths.get(UPLOAD_IMG_DIR + File.separator + imgfile.getOriginalFilename());
 				Path imgSavePath = Paths.get(UPLOAD_IMG_DIR + File.separator + imageFileName);
 						System.out.println("imgSavePath : " + imgSavePath);			//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\src\main\resources\static\img\baloon.jpeg
-						
+*/						
 				Files.copy(imgfile.getInputStream(), imgSavePath, StandardCopyOption.REPLACE_EXISTING);		// {input , target , options-how to write whether replace }
 				
-			
-				onuser.getContacts().add(contact);
-				this.userRepository.save(onuser);
-				
-				System.out.println(contact.getName() +" has been added to DataBase");
-				// Message Success
-				session.setAttribute("message", new ResponseMessage("Contact Name : " +contact.getName() +" is Successfully Added !! ", "alert-success"));
-				
 			}
+			
+			// Anyways we will save the contact to DB, despite if he has uploaded or not.
+			onuser.getContacts().add(contact);
+			this.userRepository.save(onuser);
+				
+			System.out.println(contact.getName() +" has been added to DataBase");
+			// Message Success
+			session.setAttribute("message", new ResponseMessage("Contact Name : " +contact.getName() +" is Successfully Added !! ", "alert-success"));
+				
+			
 		} 
 		catch (Exception e) {
 			// Message Error
