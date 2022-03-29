@@ -19,7 +19,7 @@
 <title th:replace="${mytitle}">Base HTML with BootStrap</title>
 </head>
 <body>
-	<!-- NAV BAR -->
+	<!--========================NAV BAR:========================-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<div class="container-fluid">
 			<a class="navbar-brand" th:href="@{/home}">Smart Contact Manager</a>
@@ -43,11 +43,14 @@
 			</div>
 		</div>
 	</nav>
-	<!-- End of NAV BAR -->
-
+	<!--==========End of NAV BAR:==========-->
 	
+	
+	<!--========================CONTENT AREA:========================-->
 	<div th:replace="${content}"></div>
-
+	
+	<!--==========End of CONTENT AREA:==========-->
+	
 
 	<!-- Bootstrap Bundle with Popper -->
 	<script

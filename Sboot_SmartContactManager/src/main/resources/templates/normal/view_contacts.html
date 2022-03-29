@@ -46,6 +46,32 @@
 							
 						</tbody>
 					</table>
+					
+					<!--========================PAGINATION PART:========================-->
+					<nav aria-label="Page navigation example" class="me-2">
+						<ul class="pagination justify-content-center">
+						
+								<!-- th:classappend="${currentPage == 0 ?'disabled':''}"  -->
+					    	<li th:if="${currentPage != 0}" class="page-item">
+					      		<a class="page-link" th:href="@{'/user/view-contacts/'+${currentPage-1}}" aria-label="Previous"> 
+					        		<span aria-hidden="true">&laquo;</span> Previous
+					      		</a>
+					    	</li>
+					    	
+					    	<li th:classappend="${currentPage==i-1?'active':''}" th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item">
+					    		<a class="page-link" th:href="@{'/user/view-contacts/'+${i-1}}"><span th:text="${i}"></span></a>
+					    	</li>
+					    		
+					    		<!-- th:classappend="${currentPage+1 == totalPages ?'disabled':''}" -->
+						    <li th:if="${currentPage+1 != totalPages}" class="page-item">
+					      		<a class="page-link" th:href="@{'/user/view-contacts/'+${currentPage+1}}" aria-label="Next"> Next 
+					        		<span aria-hidden="true">&raquo;</span>
+					      		</a>
+					   		</li>
+					  	</ul>
+					</nav> 
+					<!--==========End of PAGINATION PART:==========-->
+					
 				</div>
 
 			</div>

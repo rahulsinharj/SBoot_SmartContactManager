@@ -12,11 +12,15 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,8 +44,8 @@ public class UserController {
 	
 	private int imgcount;
 	
-// Method for adding common data to response
-	
+
+//=======================# Method for adding common data to response :=======================	
 	@ModelAttribute
 	public void addCommonData(Model model, Principal principal)
 	{
@@ -56,8 +60,8 @@ public class UserController {
 	}
 	
 	
-// Dashboard home
-	
+
+//=======================# Dashboard home :==================================================		
 	@RequestMapping("/index")
 	public String dashboard()
 	{
@@ -65,8 +69,7 @@ public class UserController {
 	}
 	
 	
-// Open Add Form Handler ::
-	
+//=======================# Add Form Handler :===============================================		
 	@GetMapping("/add-contact")
 	public String openAddContactForm(Model model) 
 	{
@@ -74,8 +77,7 @@ public class UserController {
 		return "normal/add_contact_form";
 	}
 	
-	
-// Processing AddContact Form ::
+//=======================# Processing AddContact Form :=====================================	
 	
 	@PostMapping("process-contact")
 	public String processContact(@Valid @ModelAttribute("contact") Contact contact,  BindingResult result,
@@ -141,22 +143,29 @@ public class UserController {
 		return "normal/add_contact_form";
 	}
 	
-// Show Contact Form
+//=======================# Show Contact Form :==============================================
+	/*
+		Per Page = 5[n]
+		Current Page = 0[page]
+	*/
 	
-	@GetMapping("/view-contacts") 
-	public String viewContacts(Model model, Principal principal)
+	@GetMapping("/view-contacts/{page}") 
+	public String viewContacts(@PathVariable("page") int page, Model model, Principal principal)
 	{
 		// Contacts ki list ko bhejni hai ::
 		
 		String onuserEmail = principal.getName();
 		User onuser = this.userRepository.findByEmail(onuserEmail);
 
-	//	List<Contact> contacts = onuser.getContacts();
-
-		List<Contact> contacts = this.contactRepository.findContactsByUser(onuser.getId());
+	//	List<Contact> contacts = onuser.getContacts();		// This is also one way to get all contacts associated in that onuser. This apporach won't work with Pagination.
+	//	List<Contact> contacts = this.contactRepository.findContactsByUser(onuser.getId());		// Getting all contacts without Pagination.
 		
-		model.addAttribute("contacts", contacts);	// Sending this model to "view_contact.html" page.
-			
+		Pageable pageable = PageRequest.of(page, 4);		// Pageable asks for two information : 1) Current Page- page, 2) Contact Per Page- eg-4
+		Page<Contact> pageContacts = this.contactRepository.findContactsByUser(onuser.getId(), pageable);
+		
+		model.addAttribute("contacts", pageContacts);	// Sending this model to "view_contact.html" page.
+		model.addAttribute("currentPage", page);	
+		model.addAttribute("totalPages", pageContacts.getTotalPages());
 		
 		return "normal/view_contacts";
 	}

@@ -22,7 +22,7 @@
 <title th:replace="${mytitle}">Base HTML with BootStrap</title>
 </head>
 <body>
-	<!-- This is NAV BAR :: -->
+	<!--========================NAV BAR :========================-->
 	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
 		<div class="container-fluid">
 			<a class="navbar-brand" th:href="@{/home}">Smart Contact Manager</a>
@@ -45,14 +45,14 @@
 			</div>
 		</div>
 	</nav>
-	<!-- End of NAV BAR -->
+	<!--==========End of NAV BAR:==========-->
 
-	<!-- This is SideBar :: a.item*5  -->
+	<!--========================SideBar :: a.item*5 :========================-->
 	<div class="sidebar mt-2">
 		<span onclick="toggleSidebar()" class="crossBtn" >&times;</span>
 		
 		<a th:href="@{/user/index}" class="item"><i class="fas fa-home"></i> User Home</a>
-		<a th:href="@{/user/view-contacts}" class="item"><i class="fas fa-id-card-alt"></i> View Contacts</a>
+		<a th:href="@{/user/view-contacts/0}" class="item"><i class="fas fa-id-card-alt"></i> View Contacts</a>
 		<a th:href="@{/user/add-contact}" class="item"><i class="fas fa-pencil-alt"></i> Add Contact</a>
 		<a href="#" class="item"><i class="fas fa-user-circle"></i> Your Profile</a>
 		<a href="#" class="item"><i class="fas fa-cogs"></i> Settings</a>
@@ -61,7 +61,7 @@
 	</div>
 	
 
-	<!-- This is Content Area :: -->
+	<!--========================Content Area:========================-->
 	<div class="content mt-5 rounded">
 	
 		<i onclick="toggleSidebar()" class="fas fa-bars m-3" ></i>
@@ -80,6 +80,7 @@
 		</div>
 			
 	</div>
+	<!--==========End of Content Area:==========-->
 	
 	
 	<script th:src="@{/js/script.js}"></script>
