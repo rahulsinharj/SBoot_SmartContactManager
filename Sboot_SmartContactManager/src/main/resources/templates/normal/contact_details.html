@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="/normal/userbase::layout(~{::title},~{::section})"> 	<!-- Iska matlab ki "base.html" me iss "home.html" ka "section" wala portion bhej rahe hai  -->
+<head>
+	<meta charset="ISO-8859-1">
+	<title th:if="${contact}" th:text="${contact.name}">Contact Details</title>			<!-- Setting the contact name as in Title  -->
+	<title th:unless="${contact}" th:text="'Unauthorized Contact Access'">Contact Details</title>
+</head>
+<body>
+
+	<section>
+	
+		<div class="card mx-1" th:if="${contact}">
+			<div class="card-body text-center">
+			
+				<img th:src="@{'/img/' + ${contact.image}}" alt="" style="height:200px; width:240px; border-radius:80%;" />
+			
+				<h3 class="mt-3"><span th:text="${contact.name}"></span> ( <span th:text="${contact.secondName}"></span> ) </h3>
+		
+				<table class="table table-hover">
+					<thead>
+				    	<tr>
+					    	<th>#ID</th>
+					      	<th th:text="${'CT' + contact.cId}"></th>
+				    	</tr>
+				  	</thead>
+				  	<tbody>
+				    	<tr>
+					    	<th>Email</th>
+					    	<td th:text="${contact.email}"></td>
+				      	</tr>
+				      	<tr>
+					    	<th>Phone</th>
+					    	<td th:text="${contact.phone}"></td>
+				      	</tr>
+				      	<tr>
+					    	<th>Work</th>
+					    	<td th:text="${contact.work}"></td>
+				      	</tr>
+				      	
+					</tbody>
+					
+				</table>
+		
+				<h4 class="text-center text-decoration-underline text-uppercase fw-light">Description : </h4>
+				<div class="description m-2">
+						
+						<th:block th:utext="${contact.description}"></th:block>
+						
+				</div>
+				
+				<div class="container">
+					<a th:href="@{'/user/delete/' + ${contact.cId}}" class="btn btn-danger" title="Delete this Contact !">Delete</a> 
+					<a th:href="@{'/user/update/' + ${contact.cId}}" class="btn btn-warning" title="Update this Contact !">Update</a> 
+				</div>
+			
+			</div>
+			
+		</div>
+		
+		<!--========================Unauthorized contact access for other users :========================-->
+		
+		<div th:unless="${contact}" class="text-center">	
+			<h1 class="fst-italic fw-light p-3 bg-danger text-white">You don't have required permissions to view this contact !</h1>
+			<img th:src="@{/img/unauthuser.jpg}" alt="" style="height:200px; width:240px; border-radius:80%;" />
+			<br><br>
+			<h4 class="fw-light fst-italic"><a href="/user/index/"></span> Take me to User Dashboard Page ! </a></h4>
+		</div>
+			
+		
+	</section>
+	
+
+</body>
+</html>

@@ -15,8 +15,7 @@
 				<h1 class="text-center">View All Contacts</h1>
 
 				<div class="table-responsive">
-					<table
-						class="table table-hover"> 		<!-- table-bordered ,  table-success , table-striped   -->
+					<table class="table table-hover"> 		<!-- table-bordered ,  table-success , table-striped   -->
 						<thead>
 							<tr class="table-success">
 								<th scope="col">#ID</th>
@@ -28,12 +27,13 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="c : ${contacts}">
+							<tr th:each="c : ${allContacts}">
 								<th scope="row" th:text="${'CT' + c.cId}">1</th>
 								<td> 
-									<a th:href="@{'/user/contact/' + ${c.cId}}" style="text-decoration:none; color:gray;">
+									<a th:href="@{'/user/contact/' + ${c.cId}}" style="text-decoration:none; color:gray;" 
+											onmouseover="this.style.color='limegreen'" onmouseout="this.style.color='grey'">
 										<img th:src="@{'/img/' + ${c.image}}" alt="" style="height:30px; width:30px; border-radius:80%;" />
-										<span th:text="${c.name}" onmouseover="this.style.color='limegreen'" onmouseout="this.style.color='grey'"></span>
+										<span th:text="${c.name}"></span>
 									</a>
 								</td>
 								<td th:text="${c.email}"></td>
@@ -43,9 +43,9 @@
 									<!-- <button class="btn btn-danger btn-sm">Delete</button>
 									<button class="btn btn-warning btn-sm">Update</button> -->
 									
-									<a href="#"><i class="fas fa-trash text-danger" style="font-size: 29px;"></i></a>
-									<a href="#"><i class="fas fa-pen-nib text-success" style="font-size: 29px;"></i></a>
-							
+									<a th:href="@{'/user/delete/' + ${c.cId}}" title="Delete this Contact !"><i class="fas fa-trash text-danger" style="font-size: 29px;"></i></a>
+									<a th:href="@{'/user/update/' + ${c.cId}}" title="Update this Contact !"><i class="fas fa-pen-nib text-warning" style="font-size: 29px;"></i></a>
+									
 								</td>
 							</tr>
 							
@@ -54,7 +54,7 @@
 					
 					<!--========================PAGINATION PART:========================-->
 					<nav aria-label="Page navigation example" class="me-2">
-						<ul class="pagination justify-content-center">
+						<ul class="pagination justify-content-start">
 						
 								<!-- th:classappend="${currentPage == 0 ?'disabled':''}"  -->
 					    	<li th:if="${currentPage != 0}" class="page-item">

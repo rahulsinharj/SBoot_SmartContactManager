@@ -167,11 +167,41 @@ public class UserController {
 		Pageable pageable = PageRequest.of(page, 4);		// Pageable asks for two information : 1) Current Page- page, 2) Contact Per Page- eg-4
 		Page<Contact> pageContacts = this.contactRepository.findContactsByUser(onuser.getId(), pageable);
 		
-		model.addAttribute("contacts", pageContacts);	// Sending this model to "view_contact.html" page.
+		model.addAttribute("allContacts", pageContacts);	// Sending this model to "view_contact.html" page.
 		model.addAttribute("currentPage", page);	
 		model.addAttribute("totalPages", pageContacts.getTotalPages());
 		
 		return "normal/view_contacts";
 	}
 	
+//=======================# Showing specific Contact Detail :================================
+	
+	@GetMapping("/contact/{cId}")
+	public String showContactDetails(@PathVariable("cId") int cId, Model model, Principal principal)
+	{
+		System.out.println("Contact Id : "+cId);
+		
+		Contact contact = this.contactRepository.findById(cId).get();
+		System.out.println(contact);
+		
+//=======================# Restricting onuser for seeing other users contact :================================	
+		
+		String onuserEmail = principal.getName();
+		User onuser = this.userRepository.findByEmail(onuserEmail);
+		
+		if(onuser.getId()==contact.getUser().getId())
+		{
+			model.addAttribute("contact",contact);	
+		}
+		
+			
+		return "normal/contact_details";
+	}
+	
+	
+	
 }
+
+
+
+

@@ -2,6 +2,7 @@ package smartmg.controller;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -41,6 +42,14 @@ public class HomeController {
 		return "about";
 	}
 	
+//	@RequestMapping("/error")
+//	public String error(HttpServletRequest request, Model model)
+//	{
+//		Exception exception = (Exception)request.getAttribute("javax.servlet.error.exception");
+//		model.addAttribute("exception", exception);
+//		return "error";
+//	}
+	
 	@RequestMapping("/login")
 	public String customLogin(Principal principal)
 	{
@@ -58,7 +67,8 @@ public class HomeController {
 		model.addAttribute("user", new User());
 		return "signup";
 	} 
-	
+
+//=======================# Registering any new user :================================	
 	@PostMapping("/do-register")
 	public String registerUser(@Valid @ModelAttribute("user") User user,  BindingResult result,
 								@RequestParam(value = "agreementCheck", defaultValue = "false") boolean agreementCheck,
