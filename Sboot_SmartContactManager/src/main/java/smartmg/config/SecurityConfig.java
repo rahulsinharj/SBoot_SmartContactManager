@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity				// isse SpringSecurity ki sari configurations enable hojaye.
 public class SecurityConfig extends WebSecurityConfigurerAdapter  {				// Yaha pe hum ye batayege ki kaun se URL pattern ko protect karna hai ::
 
-//	@Bean
+//	@Bean													// Iss bean ko comment isliye kar diye because "MyUserDetailsService" class ko already @Server (i.e, @Component) bana chuke hai, jisse ki uska obj ab auto create hojayega by Spring, Only we need to fetch it by Autowired. 
 //	public UserDetailsService getUserDetailsService() {
 //		return new MyUserDetailsService();
 //	}

@@ -49,7 +49,9 @@
 				</div>
 				
 				<div class="container">
-					<a th:href="@{'/user/delete/' + ${contact.cId}}" class="btn btn-danger" title="Delete this Contact !">Delete</a> 
+		<!-- 		<a th:href="@{'/user/delete/' + ${contact.cId}}" class="btn btn-danger" title="Delete this Contact !">Delete</a>  -->
+					<a href='#' th:onclick="|deleteContact(${contact.cId})|" class="btn btn-danger" title="Delete this Contact !">Delete</a>	
+
 					<a th:href="@{'/user/update/' + ${contact.cId}}" class="btn btn-warning" title="Update this Contact !">Update</a> 
 				</div>
 			
@@ -61,11 +63,13 @@
 		
 		<div th:unless="${contact}" class="text-center">	
 			<h1 class="fst-italic fw-light p-3 bg-danger text-white">You don't have required permissions to view this contact !</h1>
-			<img th:src="@{/img/unauthuser.jpg}" alt="" style="height:200px; width:240px; border-radius:80%;" />
-			<br><br>
-			<h4 class="fw-light fst-italic"><a href="/user/index/"></span> Take me to User Dashboard Page ! </a></h4>
+			<div class="me-5">
+				<img th:src="@{/img/unauthuser.jpg}" alt="" style="height:200px; width:240px; border-radius:80%;" />
+				<br><br>
+				<h4 class="fw-light fst-italic"><a href="/user/index/"></span> Take me to User Dashboard Page ! </a></h4>
+			</div>
 		</div>
-			
+			 
 		
 	</section>
 	

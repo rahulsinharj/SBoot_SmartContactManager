@@ -19,6 +19,7 @@
 	  
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 
+
 <title th:replace="${mytitle}">Base HTML with BootStrap</title>
 </head>
 <body>
@@ -66,7 +67,7 @@
 	
 		<i onclick="toggleSidebar()" class="fas fa-bars m-3" ></i>
 		
-		<!-- Response Message  -->
+		<!--=================Response Message:=================-->
 		<div class="container">
 			<div style="height:7vh;" th:if="${session.message}" th:classappend="${session.message.type}" class="alert-dismissible fade show alert rounded" role="alert">
 				<p class="text-center" th:text="${session.message.content}"></p>
@@ -95,7 +96,50 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 
+	<!--========================[Sweet Alert]:========================-->
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	
+	<script>
+		function deleteContact(cid)
+		{
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-danger',
+					cancelButton: 'btn btn-secondary'
+				},
+				buttonsStyling: false
+			})
+
+			swalWithBootstrapButtons.fire({
+				title: 'Are you sure?',
+				text: "You want to delete this contact ?",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Yes, delete it !',
+				cancelButtonText: 'No, cancel !',
+				reverseButtons: true
+			}).then((result) => {
+				if (result.isConfirmed) 
+				{
+					window.location="/user/delete/"+cid;
+					  
+					swalWithBootstrapButtons.fire(
+						'Deleted!',
+						'Your Contact has been deleted.',
+						'success'
+					)
+				} 
+				else if (result.dismiss === Swal.DismissReason.cancel) 
+				{
+					swalWithBootstrapButtons.fire(
+						'Cancelled',
+						'Your Contact is safe :)',
+						'error'
+					)
+				}
+			})
+		}
+	</script>
 
 </body>
 </html>

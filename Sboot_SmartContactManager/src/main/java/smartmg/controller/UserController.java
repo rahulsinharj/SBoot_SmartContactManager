@@ -46,7 +46,7 @@ public class UserController {
 	private int imgcount;
 	
 
-//=======================# Method for adding common data to response :=======================	
+//====================# Method for adding common data to response :==========================	
 	@ModelAttribute
 	public void addCommonData(Model model, Principal principal)
 	{
@@ -62,7 +62,7 @@ public class UserController {
 	
 	
 
-//=======================# Dashboard home :==================================================		
+//====================# Dashboard home :=====================================================		
 	@RequestMapping("/index")
 	public String dashboard()
 	{
@@ -70,7 +70,7 @@ public class UserController {
 	}
 	
 	
-//=======================# Add Form Handler :===============================================		
+//====================# Add Form Handler :==================================================		
 	@GetMapping("/add-contact")
 	public String openAddContactForm(Model model) 
 	{
@@ -78,10 +78,10 @@ public class UserController {
 		return "normal/add_contact_form";
 	}
 	
-//=======================# Processing AddContact Form :=====================================	
+//====================# Processing AddContact Form :========================================	
 	
 	@PostMapping("process-contact")
-	public String processContact(@Valid @ModelAttribute("contact") Contact contact,  BindingResult result,
+	public String processContact(@Valid @ModelAttribute("contact") Contact contact,  BindingResult bindingResult,
 								 @RequestParam("profileImage") MultipartFile imgfile,  
 								 Principal principal , HttpSession session)
 	{
@@ -147,7 +147,7 @@ public class UserController {
 		return "normal/add_contact_form";
 	}
 	
-//=======================# Show Contact Form :==============================================
+//====================# Show Contact Form :=================================================
 	/*
 		Per Page = 5[n]
 		Current Page = 0[page]
@@ -174,7 +174,7 @@ public class UserController {
 		return "normal/view_contacts";
 	}
 	
-//=======================# Showing specific Contact Detail :================================
+//====================# Showing specific Contact Detail :===================================
 	
 	@GetMapping("/contact/{cId}")
 	public String showContactDetails(@PathVariable("cId") int cId, Model model, Principal principal)
@@ -184,7 +184,7 @@ public class UserController {
 		Contact contact = this.contactRepository.findById(cId).get();
 		System.out.println(contact);
 		
-//=======================# Restricting onuser for seeing other users contact :================================	
+//====================# Restricting onuser for seeing other users contact :=================	
 		
 		String onuserEmail = principal.getName();
 		User onuser = this.userRepository.findByEmail(onuserEmail);
@@ -197,6 +197,50 @@ public class UserController {
 			
 		return "normal/contact_details";
 	}
+
+//====================# Updating a contact :================================================
+	
+	@GetMapping("/delete/{cid}")
+	public String deleteContact(@PathVariable("cid") int cid, Principal principal, HttpSession session)
+	{
+		try {
+			String onuserEmail = principal.getName();
+			User onuser = this.userRepository.findByEmail(onuserEmail);
+			
+			Contact contact = this.contactRepository.findById(cid).get();
+			String cname = contact.getName();
+			
+			if(onuser.getId()==contact.getUser().getId())
+			{
+				// Removing that contact's Image from /img folder
+				File imgfilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
+				
+				Path imgDelPath = Paths.get(imgfilePath.getAbsolutePath()+File.separator + contact.getImage());
+				System.out.println("File deleted at imgDelPath : " +imgDelPath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
+		
+				Files.deleteIfExists(imgDelPath);
+				
+//				Files.copy(imgfile.getInputStream(), imgSavePath, StandardCopyOption.REPLACE_EXISTING);		// {input , target , options-how to write whether replace }
+				
+				
+				// Removing that contact
+				contact.setUser(null);
+				this.contactRepository.delete(contact);	
+				session.setAttribute("message", new ResponseMessage("Contact Name : " +cname +" has been deleted Successfully !! ", "alert-success"));
+			}
+			else {
+				session.setAttribute("message", new ResponseMessage("Unauthorized User Operation detected ! " , "alert-danger"));
+			}
+		} 
+		catch (Exception e) {
+			// Message Error
+			session.setAttribute("message", new ResponseMessage("something went wrong : "+e.getMessage() , "alert-danger"));
+			e.printStackTrace();
+		}
+		
+		return "redirect:/user/view-contacts/0";
+	}
+	
 	
 	
 	
