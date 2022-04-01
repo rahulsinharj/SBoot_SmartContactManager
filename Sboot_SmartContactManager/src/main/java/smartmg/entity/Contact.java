@@ -110,12 +110,14 @@ public class Contact {
 		return "Contact [cId= " + cId + ", name= " + name + ", secondName= " + secondName + ", work= " + work + ", email= "
 				+ email + ", phone= " + phone + ", image= " + image;
 	}
+
+	// Sare Lists se 1 particular contact ko remove karne ke liye "Object Matching" ki zarurat padegi.
+	@Override
+	public boolean equals(Object obj) {
+		return this.cId==((Contact)obj).getcId();
+	}
 	
 
-	
-	
-	
-	
 	
 	
 }

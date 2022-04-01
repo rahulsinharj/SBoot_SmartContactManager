@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -203,6 +204,7 @@ public class UserController {
 //====================# Deleting a contact :================================================
 	
 	@GetMapping("/delete-contact/{cid}")
+	@Transactional
 	public String deleteContact(@PathVariable("cid") int cid, Principal principal, HttpSession session)
 	{
 		try {
@@ -211,20 +213,25 @@ public class UserController {
 			
 			Contact contact = this.contactRepository.findById(cid).get();
 			String cname = contact.getName();
+				System.out.println("Delete Contact : "+contact);
 			
 			if(onuser.getId()==contact.getUser().getId())
 			{
 				// Removing that contact's Image from /img folder
 				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
-				
 				Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + contact.getImage());
-				System.out.println("File deleted at imgDelPath : " +imgDelFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
+						System.out.println("File deleted at imgDelPath : " +imgDelFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
 		
 				Files.deleteIfExists(imgDelFilePath);
 				
 				// Removing that contact
-				contact.setUser(null);
-				this.contactRepository.delete(contact);	
+//				contact.setUser(null);					// Unlinking this contact with the user firstly.
+//				this.contactRepository.delete(contact);			// If this approach doesn't work then follow below ::
+	
+				onuser.getContacts().remove(contact);		// User ke jitne bhi contact honge usse ye particular contact ko remove kar do.
+				this.userRepository.save(onuser);			// iss onuser ke paas contacts bhi to hai, usko bhi update kar dega.
+				
+				
 				session.setAttribute("message", new ResponseMessage("Contact Name : " +cname +" has been deleted Successfully !! ", "alert-success"));
 			}
 			else {
