@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -109,22 +108,25 @@ public class UserController {
 						System.out.println("imageFileName : "+imageFileName);
 				
 				contact.setImage(imageFileName);
+
+	// Saving img into location :: 	"\src\main\resources\static\img\"
 				
+/*				final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
+				
+			//	Path imgSaveFilePath = Paths.get(uploadFilePath + File.separator + imgfile.getOriginalFilename());
+				Path imgSaveFilePath = Paths.get(uploadFilePath + File.separator + imageFileName);
+						System.out.println("imgSaveFilePath : " + imgSaveFilePath);			//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\src\main\resources\static\img\baloon.jpeg
+*/		
+	
+	// Saving img into location :: 	"\target\classes\static\img\"		
 				
 				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
 						System.out.println("uploadFilePath : " +uploadFilePath);
 				
-				Path imgSavePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + imageFileName);
-						System.out.println("imgSavePath : " +imgSavePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
+				Path imgSaveFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + imageFileName);
+						System.out.println("imgSaveFilePath : " +imgSaveFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
 				
-				
-/*				final String UPLOAD_IMG_DIR = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
-				
-			//	Path imgSavePath = Paths.get(UPLOAD_IMG_DIR + File.separator + imgfile.getOriginalFilename());
-				Path imgSavePath = Paths.get(UPLOAD_IMG_DIR + File.separator + imageFileName);
-						System.out.println("imgSavePath : " + imgSavePath);			//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\src\main\resources\static\img\baloon.jpeg
-*/						
-				Files.copy(imgfile.getInputStream(), imgSavePath, StandardCopyOption.REPLACE_EXISTING);		// {input , target , options-how to write whether replace }
+				Files.copy(imgfile.getInputStream(), imgSaveFilePath, StandardCopyOption.REPLACE_EXISTING);		// {input , target , options-how to write whether replace }
 				
 			}
 			
@@ -144,7 +146,7 @@ public class UserController {
 			e.printStackTrace();
 		}
 		
-		return "normal/add_contact_form";
+		return "redirect:/user/add-contact";
 	}
 	
 //====================# Show Contact Form :=================================================
@@ -198,9 +200,9 @@ public class UserController {
 		return "normal/contact_details";
 	}
 
-//====================# Updating a contact :================================================
+//====================# Deleting a contact :================================================
 	
-	@GetMapping("/delete/{cid}")
+	@GetMapping("/delete-contact/{cid}")
 	public String deleteContact(@PathVariable("cid") int cid, Principal principal, HttpSession session)
 	{
 		try {
@@ -213,15 +215,12 @@ public class UserController {
 			if(onuser.getId()==contact.getUser().getId())
 			{
 				// Removing that contact's Image from /img folder
-				File imgfilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
+				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
 				
-				Path imgDelPath = Paths.get(imgfilePath.getAbsolutePath()+File.separator + contact.getImage());
-				System.out.println("File deleted at imgDelPath : " +imgDelPath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
+				Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + contact.getImage());
+				System.out.println("File deleted at imgDelPath : " +imgDelFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
 		
-				Files.deleteIfExists(imgDelPath);
-				
-//				Files.copy(imgfile.getInputStream(), imgSavePath, StandardCopyOption.REPLACE_EXISTING);		// {input , target , options-how to write whether replace }
-				
+				Files.deleteIfExists(imgDelFilePath);
 				
 				// Removing that contact
 				contact.setUser(null);
@@ -241,8 +240,90 @@ public class UserController {
 		return "redirect:/user/view-contacts/0";
 	}
 	
+//====================# Updating a contact :================================================
 	
+	@PostMapping("/update-contact/{cid}")
+	public String updateContact(@PathVariable("cid") int cid, Model model)
+	{
+		System.out.println("Update form for Cid : "+cid);
+		
+		Contact contact = this.contactRepository.findById(cid).get();
+		model.addAttribute("contact", contact);
+		
+		return "normal/update_contact_form";
+	}
+			
 	
+//====================# Processing UpdateContact Form :=====================================	
+	
+	@PostMapping("process-update")
+	public String processUpdateContact(@Valid @ModelAttribute("updatedContact") Contact updatedContact,  BindingResult bindingResult,
+									 @RequestParam("profileImage") MultipartFile imgfile,  
+									 Principal principal , HttpSession session, Model model)
+	{
+		try {
+			
+			System.out.println("Updated DATA : "+updatedContact);
+				
+			// Fetching Old Contact details for saving image if user hasn't send the updated image ::
+			Contact oldContact = this.contactRepository.findById(updatedContact.getcId()).get();
+			
+			String onuserEmail = principal.getName();
+			User onuser = this.userRepository.findByEmail(onuserEmail);
+			updatedContact.setUser(onuser);
+				
+			// processing and uploading image ::
+			
+			if(!imgfile.isEmpty()) 
+			{
+				// Delete old profile pic  ::
+				
+				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
+				Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + oldContact.getImage());
+				Files.deleteIfExists(imgDelFilePath);
+				
+				// Store the new pic ::
+				
+		//		updatedContact.setImage(imgfile.getOriginalFilename());		// Setting updated image without any count in end name.
+				
+				// Appending "imgcount" after the filename before the .jpeg extension ::
+				imgcount++;
+				String tempName = imgfile.getOriginalFilename();
+				String imageFileType = tempName.substring(tempName.indexOf("."));
+				String imageFileName = tempName.substring(0,tempName.indexOf(".")) + imgcount + imageFileType;
+						System.out.println("imageFileName : "+imageFileName);
+				
+				updatedContact.setImage(imageFileName);
+				
+				// Saving the actual image into server ::
+				Path imgSaveFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + imageFileName);
+						System.out.println("imgSaveFilePath : " +imgSaveFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
+			
+				Files.copy(imgfile.getInputStream(), imgSaveFilePath, StandardCopyOption.REPLACE_EXISTING);		// {input , target , options-how to write whether replace }
+				
+			}
+			else {
+				// If the contact has not updated any new profile pic
+				updatedContact.setImage(oldContact.getImage());
+			}
+	
+			// Anyways we will save the updated-contact to DB, despite if user has/or hasn't send the updated image.
+			this.contactRepository.save(updatedContact);
+					
+			System.out.println(updatedContact.getName() +" has been updated to DataBase");
+			// Message Success
+			session.setAttribute("message", new ResponseMessage("Contact Name : " +updatedContact.getName() +" is Successfully Updated !! ", "alert-success"));
+					
+				
+		} 
+		catch (Exception e) {
+			// Message Error
+			session.setAttribute("message", new ResponseMessage("something went wrong : "+e.getMessage() , "alert-danger"));
+			e.printStackTrace();
+		}
+			
+		return "redirect:/user/contact/"+updatedContact.getcId();
+	}	
 	
 }
 

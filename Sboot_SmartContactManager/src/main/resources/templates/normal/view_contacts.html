@@ -40,14 +40,16 @@
 								<td th:text="${c.phone}"></td>
 								<td th:text="${c.work}"></td> 
 								<td>
-									<!-- <button class="btn btn-danger btn-sm">Delete</button>
-									<button class="btn btn-warning btn-sm">Update</button> -->
 									
-									<!-- <a th:href="@{'/user/delete/' + ${c.cId}}" title="Delete this Contact !"><i class="fas fa-trash text-danger" style="font-size: 29px;"></i></a> -->
-									<a href="#" th:onclick="|deleteContact(${c.cId})|" title="Delete this Contact !"><i class="fas fa-trash text-danger" style="font-size: 29px;"></i></a>
-									
-									<a th:href="@{'/user/update/' + ${c.cId}}" title="Update this Contact !"><i class="fas fa-pen-nib text-warning" style="font-size: 29px;"></i></a>
-									
+									<div class="d-flex">
+										<!-- <a th:href="@{'/user/delete-contact/' + ${c.cId}}" title="Delete this Contact !"><i class="fas fa-trash text-danger" style="font-size: 29px;"></i></a> -->
+										<a href="#" th:onclick="|deleteContact(${c.cId})|" title="Delete this Contact !"><i class="fas fa-trash text-danger" style="font-size: 29px;"></i></a>
+									 
+										<form method="post" th:action="@{'/user/update-contact/' +${c.cId}}">
+											<!-- <button type="submit" class="btn btn-warning" title="Update this Contact !">Update</button> -->
+											<button type="submit" class="btn btn-sm" title="Update this Contact !"><i class="fas fa-pen-nib text-warning" style="font-size: 30px;"></i></button>
+										</form>
+									</div>
 								</td>
 							</tr>
 							

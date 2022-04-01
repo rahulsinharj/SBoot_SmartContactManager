@@ -121,8 +121,8 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "Loggedin User [id=" + id + ", name=" + name + ", email=" + email + ", role=" + role
-				+ ", enabled=" + enabled + ", imageUrl=" + imageUrl + ", about=" + about;
+		return "Loggedin User [id= " + id + ", name= " + name + ", email= " + email + ", role= " + role
+				+ ", enabled= " + enabled + ", imageUrl= " + imageUrl + ", about= " + about;
 	}
 	
 }
