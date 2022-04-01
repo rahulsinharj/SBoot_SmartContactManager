@@ -45,19 +45,20 @@ public class UserController {
 	
 	private int imgcount;
 	
+	private User onuser;		// Logged in User
 
-//====================# Method for adding common data to response :==========================	
+//====================# 1ST-Method for adding common data to response :==========================	
 	@ModelAttribute
 	public void addCommonData(Model model, Principal principal)
 	{
-		String loginUserName = principal.getName();				// Get the user(user email) through Principal obj
-		System.out.println("USER Email : "+ loginUserName);
+		String loginUserEmail = principal.getName();				// Get the user(user email) through Principal obj
+		System.out.println("USER Email : "+ loginUserEmail);
 		
-	//	User user = userRepository.getUserByUserEmail(loginUserName);
-		User user = userRepository.findByEmail(loginUserName);
+	//	this.onuser = userRepository.getUserByUserEmail(loginUserName);
+		this.onuser = userRepository.findByEmail(loginUserEmail);
 		
-		System.out.println("USER Info : " + user);
-		model.addAttribute("user", user);			// By this line, "user" obj will be accessible in all user/index html pages 
+		System.out.println("USER Info : " + onuser);
+		model.addAttribute("user", onuser);			// By this line, "user" obj will be accessible in all user/index html pages 
 	}
 	
 	
@@ -82,15 +83,12 @@ public class UserController {
 	
 	@PostMapping("process-contact")
 	public String processContact(@Valid @ModelAttribute("contact") Contact contact,  BindingResult bindingResult,
-								 @RequestParam("profileImage") MultipartFile imgfile,  
-								 Principal principal , HttpSession session)
+								 @RequestParam("profileImage") MultipartFile imgfile, HttpSession session)
 	{
 		try {
 			System.out.println("DATA : "+contact);
 			
-			String onuserEmail = principal.getName();
-			User onuser = this.userRepository.findByEmail(onuserEmail);
-			contact.setUser(onuser);
+			contact.setUser(this.onuser);
 			
 	// processing and uploading file
 			if(imgfile.isEmpty()) {
@@ -157,18 +155,15 @@ public class UserController {
 	*/
 	
 	@GetMapping("/view-contacts/{page}") 
-	public String viewContacts(@PathVariable("page") int page, Model model, Principal principal)
+	public String viewContacts(@PathVariable("page") int page, Model model)
 	{
 		// Contacts ki list ko bhejni hai ::
 		
-		String onuserEmail = principal.getName();
-		User onuser = this.userRepository.findByEmail(onuserEmail);
-
 	//	List<Contact> contacts = onuser.getContacts();		// This is also one way to get all contacts associated in that onuser. This apporach won't work with Pagination.
 	//	List<Contact> contacts = this.contactRepository.findContactsByUser(onuser.getId());		// Getting all contacts without Pagination.
 		
 		Pageable pageable = PageRequest.of(page, 4);		// Pageable asks for two information : 1) Current Page- page, 2) Contact Per Page- eg-4
-		Page<Contact> pageContacts = this.contactRepository.findContactsByUser(onuser.getId(), pageable);
+		Page<Contact> pageContacts = this.contactRepository.findContactsByUser(this.onuser.getId(), pageable);
 		
 		model.addAttribute("allContacts", pageContacts);	// Sending this model to "view_contact.html" page.
 		model.addAttribute("currentPage", page);	
@@ -180,19 +175,16 @@ public class UserController {
 //====================# Showing specific Contact Detail :===================================
 	
 	@GetMapping("/contact/{cId}")
-	public String showContactDetails(@PathVariable("cId") int cId, Model model, Principal principal)
+	public String showContactDetails(@PathVariable("cId") int cId, Model model)
 	{
 		System.out.println("Contact Id : "+cId);
 		
 		Contact contact = this.contactRepository.findById(cId).get();
 		System.out.println(contact);
 		
-//====================# Restricting onuser for seeing other users contact :=================	
+	//======# Restricting onuser for seeing other users contact :=======	
 		
-		String onuserEmail = principal.getName();
-		User onuser = this.userRepository.findByEmail(onuserEmail);
-		
-		if(onuser.getId()==contact.getUser().getId())
+		if(this.onuser.getId()==contact.getUser().getId())
 		{
 			model.addAttribute("contact",contact);	
 		}
@@ -205,17 +197,15 @@ public class UserController {
 	
 	@GetMapping("/delete-contact/{cid}")
 	@Transactional
-	public String deleteContact(@PathVariable("cid") int cid, Principal principal, HttpSession session)
+	public String deleteContact(@PathVariable("cid") int cid, HttpSession session)
 	{
 		try {
-			String onuserEmail = principal.getName();
-			User onuser = this.userRepository.findByEmail(onuserEmail);
 			
 			Contact contact = this.contactRepository.findById(cid).get();
 			String cname = contact.getName();
 				System.out.println("Delete Contact : "+contact);
 			
-			if(onuser.getId()==contact.getUser().getId())
+			if(this.onuser.getId()==contact.getUser().getId())
 			{
 				// Removing that contact's Image from /img folder
 				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
@@ -225,11 +215,11 @@ public class UserController {
 				Files.deleteIfExists(imgDelFilePath);
 				
 				// Removing that contact
-//				contact.setUser(null);					// Unlinking this contact with the user firstly.
+//				contact.setUser(null);							// Unlinking this contact with the user firstly.
 //				this.contactRepository.delete(contact);			// If this approach doesn't work then follow below ::
 	
-				onuser.getContacts().remove(contact);		// User ke jitne bhi contact honge usse ye particular contact ko remove kar do.
-				this.userRepository.save(onuser);			// iss onuser ke paas contacts bhi to hai, usko bhi update kar dega.
+				this.onuser.getContacts().remove(contact);		// User ke jitne bhi contact honge usse ye particular contact ko remove kar do.
+				this.userRepository.save(this.onuser);			// iss onuser ke paas contacts bhi to hai, usko bhi update kar dega.
 				
 				
 				session.setAttribute("message", new ResponseMessage("Contact Name : " +cname +" has been deleted Successfully !! ", "alert-success"));
@@ -266,7 +256,7 @@ public class UserController {
 	@PostMapping("process-update")
 	public String processUpdateContact(@Valid @ModelAttribute("updatedContact") Contact updatedContact,  BindingResult bindingResult,
 									 @RequestParam("profileImage") MultipartFile imgfile,  
-									 Principal principal , HttpSession session, Model model)
+									 HttpSession session, Model model)
 	{
 		try {
 			
@@ -275,9 +265,7 @@ public class UserController {
 			// Fetching Old Contact details for saving image if user hasn't send the updated image ::
 			Contact oldContact = this.contactRepository.findById(updatedContact.getcId()).get();
 			
-			String onuserEmail = principal.getName();
-			User onuser = this.userRepository.findByEmail(onuserEmail);
-			updatedContact.setUser(onuser);
+			updatedContact.setUser(this.onuser);
 				
 			// processing and uploading image ::
 			
@@ -331,6 +319,17 @@ public class UserController {
 			
 		return "redirect:/user/contact/"+updatedContact.getcId();
 	}	
+	
+	
+//====================# Showing Onuser Profile Detail :========================================	
+	
+	@GetMapping("/profile")
+	public String onuserProfile()
+	{
+		// Since user has been returned in each and every field , so now we only have to return "" page.
+		return "normal/profile";
+	}
+	
 	
 }
 
