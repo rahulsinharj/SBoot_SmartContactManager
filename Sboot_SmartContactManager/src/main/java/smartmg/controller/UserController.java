@@ -326,7 +326,7 @@ public class UserController {
 	@GetMapping("/profile")
 	public String onuserProfile()
 	{
-		// Since user has been returned in each and every field , so now we only have to return "" page.
+		// Since user has been returned in each and every field , so now we only have to return "normal/profile .html" page.
 		return "normal/profile";
 	}
 	

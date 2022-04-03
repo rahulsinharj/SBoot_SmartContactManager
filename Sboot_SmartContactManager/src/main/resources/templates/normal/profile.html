@@ -1,19 +1,87 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="/normal/userbase::layout(~{::title},~{::section})"> 	<!-- Iska matlab ki "base.html" me iss "home.html" ka "section" wala portion bhej rahe hai  -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="/normal/userbase::layout(~{::title},~{::section})">
+<!-- Iska matlab ki "base.html" me iss "home.html" ka "section" wala portion bhej rahe hai  -->
 <head>
-	<meta charset="ISO-8859-1">
-	<title>User Profile</title>
+<meta charset="ISO-8859-1">
+<title>User Profile</title>
 </head>
 <body>
 
 	<section>
-	
-		<h3>User Profile Name : <span th:text="${user.name}"></span> </h3>
-		
-		
-		
+		<div class="container">
+			<div class="card">
+				<div class="card-body">
+
+					<div class="row justify-content-center">
+						<div class="col-md-10">
+
+							<div class="container text-center">
+								<img src="" style="height: 200px; width: 240px; border-radius:80%;"
+									class="my_profile_picture me-2" th:src="@{'/img/'+${user.imageUrl}}"
+									alt="profile photo" />
+
+							</div>
+
+							<h1 class="text-center mt-3" th:text="${user.name}"></h1>
+
+							<table class="table table-hover">
+								<thead>
+									<tr class="table-secondary">
+										<th scope="col">#USERID</th>
+										<th scope="col">SCMUSER<span th:text="${user.id}"></span></th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th scope="row">Email</th>
+										<td><span th:text="${user.email}"></span></td>
+
+									</tr>
+
+
+									<tr>
+										<th scope="row">Role</th>
+										<td><span th:text="${user.role}"></span></td>
+
+									</tr>
+
+									<tr>
+										<th scope="row">Account Active Status</th>
+										<td><span th:text="${user.enabled}"></span></td>
+
+									</tr>
+
+									</tr>
+
+									<tr>
+										<th scope="row">About you</th>
+										<td><span th:text="${user.about}"></span></td>
+
+									</tr>
+
+								</tbody>
+
+							</table>
+
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<script>
+        $(document).ready(() => {
+          $(".item").removeClass("active");
+          $("#profile-link").addClass("active");
+        });
+      </script>
+
 	</section>
-	
+
 
 </body>
 </html>
