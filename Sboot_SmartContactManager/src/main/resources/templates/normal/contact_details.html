@@ -56,7 +56,7 @@
 				
 				<div class="d-flex offset-sm-5">
 					
-					<button th:onclick="|deleteContact(${contact.cId})|" class="btn btn-danger" title="Delete this Contact !">Delete</button> &nbsp;
+					<button th:onclick="|deleteContact(${contact.cId})|" class="btn btn-danger me-2" title="Delete this Contact !">Delete</button>
 					<form method="post" th:action="@{'/user/update-contact/' +${contact.cId}}">
 						<button type="submit" class="btn btn-warning" title="Update this Contact !">Update</button>
 					</form>	

@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "contacts")
 public class Contact {
@@ -27,6 +29,7 @@ public class Contact {
 	private String description;
 	
 	@ManyToOne
+	@JsonIgnore					// Iss Annotaion ke wajah se JSON ka data "user" field ke liye serialize nhi hoga, nhi to circular dependency ke case me fasa reh jayega. 
 	private User user;
 	
 	public Contact() {

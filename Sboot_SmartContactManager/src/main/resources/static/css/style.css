@@ -84,7 +84,20 @@ body{
 	margin-left : 20%;
 }
 
+/*=====[Search CSS]=====*/
 
+.search-container{
+	position: relative;
+}
+.search-result{
+	position : absolute;					/* Iss "absolute" se niche wale contents ke upar ye chad jayega.    */
+	background: white;
+	width: 100%;
+	padding: 8px;
+	border: 1px solid gray;
+	border-radius: 6px;
+	display : none;
+}
 
 
 

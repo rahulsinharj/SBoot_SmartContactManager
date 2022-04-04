@@ -14,6 +14,15 @@
 			<div class="card-body">
 				<h1 class="text-center text-secondary">View All Contacts</h1>
 
+				<!--========================[Search funtionality PART:]========================-->
+				<div class="search-container my-3">
+					<input onkeyup="contactSearch()" id="search-input" type="text" class="form-control" placeholder="Search your contacts" autofocus />
+					
+					<div class="search-result"> </div>
+						
+				</div>
+
+				<!--========================[Showing all Contacts in Tables :]========================-->
 				<div class="table-responsive">
 					<table class="table table-hover"> 		<!-- table-bordered ,  table-success , table-striped   -->
 						<thead>
@@ -56,7 +65,7 @@
 						</tbody>
 					</table>
 					
-					<!--========================PAGINATION PART:========================-->
+					<!--========================[PAGINATION PART:]========================-->
 					<nav aria-label="Page navigation example" class="ms-1">
 						<ul class="pagination justify-content-start">
 						
