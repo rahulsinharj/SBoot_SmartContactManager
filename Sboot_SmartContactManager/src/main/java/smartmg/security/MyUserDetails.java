@@ -1,4 +1,4 @@
-package smartmg.config;
+package smartmg.security;
 
 import java.util.Collection;
 import java.util.List;
