@@ -19,7 +19,7 @@ import smartmg.dao.ContactRepository;
 import smartmg.dao.UserRepository;
 import smartmg.entity.Contact;
 import smartmg.entity.User;
-import smartmg.helper.HelperUtil;
+import smartmg.util.HelperUtil;
 
 @Controller
 public class UtilityController {

@@ -32,7 +32,7 @@ import smartmg.dao.ContactRepository;
 import smartmg.dao.UserRepository;
 import smartmg.entity.Contact;
 import smartmg.entity.User;
-import smartmg.helper.ResponseMessage;
+import smartmg.util.ResponseMessage;
 
 @Controller
 @RequestMapping("/user")

@@ -1,4 +1,4 @@
-package smartmg.helper;
+package smartmg.util;
 
 public class ResponseMessage {
 

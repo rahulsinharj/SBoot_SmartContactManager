@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import smartmg.dao.UserRepository;
 import smartmg.entity.User;
-import smartmg.helper.ResponseMessage;
+import smartmg.util.ResponseMessage;
 
 @Controller
 public class HomeController {
