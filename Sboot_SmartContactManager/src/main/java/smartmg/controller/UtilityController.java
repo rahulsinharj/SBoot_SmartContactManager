@@ -19,6 +19,7 @@ import smartmg.dao.ContactRepository;
 import smartmg.dao.UserRepository;
 import smartmg.entity.Contact;
 import smartmg.entity.User;
+import smartmg.service.EmailService;
 import smartmg.util.HelperUtil;
 
 @Controller
@@ -32,6 +33,9 @@ public class UtilityController {
 	
 	@Autowired
 	private HelperUtil helperUtil;
+	
+	@Autowired
+	private EmailService emailService;
 	
 //====================# Search Handler :=====================================================			
 	
@@ -67,6 +71,9 @@ public class UtilityController {
 		final int OTP = this.helperUtil.getRandomOTP();
 		
 	// Program for sending OTP to email ::	
+		
+		this.emailService.sendEmail(email, OTP);
+		
 		
 		return "verify_otp";
 	}
