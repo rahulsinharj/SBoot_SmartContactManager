@@ -97,7 +97,7 @@ public class UserController {
 			}
 			else 
 			{
-			//	contact.setImage(imgfile.getOriginalFilename());
+				// contact.setImage(imgfile.getOriginalFilename());
 				
 	// Appending "imgcount" after the filename before the .jpeg extension.
 				imgcount++;
@@ -108,22 +108,23 @@ public class UserController {
 				
 				contact.setImage(imageFileName);
 
-	// Saving img into location :: 	"\src\main\resources\static\img\"
-				
-/*				final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
-				
-			//	Path imgSaveFilePath = Paths.get(uploadFilePath + File.separator + imgfile.getOriginalFilename());
-				Path imgSaveFilePath = Paths.get(uploadFilePath + File.separator + imageFileName);
-						System.out.println("imgSaveFilePath : " + imgSaveFilePath);			//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\src\main\resources\static\img\baloon.jpeg
-*/		
-	
 	// Saving img into location :: 	"\target\classes\static\img\"		
 				
-				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
-						System.out.println("uploadFilePath : " +uploadFilePath);
+/*				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
+					System.out.println("uploadFilePath : " +uploadFilePath);
 				
+			//	Path imgSaveFilePath = Paths.get(uploadFilePath + File.separator + imgfile.getOriginalFilename());
 				Path imgSaveFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + imageFileName);
-						System.out.println("imgSaveFilePath : " +imgSaveFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
+				
+					System.out.println("imgSaveFilePath : " +imgSaveFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
+*/
+	
+	// Saving img into location :: 	"\src\main\resources\static\img\"
+				
+				final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
+						
+				Path imgSaveFilePath = Paths.get(uploadFilePath + File.separator + imageFileName);
+					System.out.println("imgSaveFilePath : " + imgSaveFilePath);			//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\src\main\resources\static\img\baloon.jpeg
 				
 				Files.copy(imgfile.getInputStream(), imgSaveFilePath, StandardCopyOption.REPLACE_EXISTING);		// {input , target , options-how to write whether replace }
 				
@@ -157,10 +158,10 @@ public class UserController {
 	@GetMapping("/view-contacts/{page}") 
 	public String viewContacts(@PathVariable("page") int page, Model model)
 	{
-		// Contacts ki list ko bhejni hai ::
+	// Contacts ki list ko bhejni hai ::
 		
-	//	List<Contact> contacts = onuser.getContacts();		// This is also one way to get all contacts associated in that onuser. This apporach won't work with Pagination.
-	//	List<Contact> contacts = this.contactRepository.findContactsByUser(onuser.getId());		// Getting all contacts without Pagination.
+		// List<Contact> contacts = onuser.getContacts();		// This is also one way to get all contacts associated in that onuser. This apporach won't work with Pagination.
+		// List<Contact> contacts = this.contactRepository.findContactsByUser(onuser.getId());		// Getting all contacts without Pagination.
 		
 		Pageable pageable = PageRequest.of(page, 4);		// Pageable asks for two information : 1) Current Page- page, 2) Contact Per Page- eg-4
 		Page<Contact> pageContacts = this.contactRepository.findContactsByUser(this.onuser.getId(), pageable);
@@ -207,16 +208,22 @@ public class UserController {
 			
 			if(this.onuser.getId()==contact.getUser().getId())
 			{
-				// Removing that contact's Image from /img folder
-				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
-				Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + contact.getImage());
+			// Removing that contact's Image from /img folder
+				//File uploadFilePath = new ClassPathResource("static/img").getFile();									//	"\target\classes\static\img\"
+				//Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + contact.getImage());
+				
+				final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
+				Path imgDelFilePath = Paths.get(uploadFilePath + File.separator + contact.getImage());
 						System.out.println("File deleted at imgDelPath : " +imgDelFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
+		
+				
+				System.out.println("File deleted at imgDelPath : " +imgDelFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
 		
 				Files.deleteIfExists(imgDelFilePath);
 				
-				// Removing that contact
-//				contact.setUser(null);							// Unlinking this contact with the user firstly.
-//				this.contactRepository.delete(contact);			// If this approach doesn't work then follow below ::
+			// Removing that contact
+				// contact.setUser(null);							// Unlinking this contact with the user firstly.
+				// this.contactRepository.delete(contact);			// If this approach doesn't work then follow below ::
 	
 				this.onuser.getContacts().remove(contact);		// User ke jitne bhi contact honge usse ye particular contact ko remove kar do.
 				this.userRepository.save(this.onuser);			// iss onuser ke paas contacts bhi to hai, usko bhi update kar dega.
@@ -271,17 +278,21 @@ public class UserController {
 			
 			if(!imgfile.isEmpty()) 
 			{
-				// Delete old profile pic  ::
+			// Delete old profile pic  ::
 				
-				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
-				Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + oldContact.getImage());
+				// File uploadFilePath = new ClassPathResource("static/img").getFile();									//	"\target\classes\static\img\"
+				// Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + oldContact.getImage());
+				
+				final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
+				Path imgDelFilePath = Paths.get(uploadFilePath + File.separator + oldContact.getImage());
+				
 				Files.deleteIfExists(imgDelFilePath);
 				
-				// Store the new pic ::
+			// Store the new pic ::
 				
-		//		updatedContact.setImage(imgfile.getOriginalFilename());		// Setting updated image without any count in end name.
+				// updatedContact.setImage(imgfile.getOriginalFilename());		// Setting updated image without any count in end name.
 				
-				// Appending "imgcount" after the filename before the .jpeg extension ::
+			// Appending "imgcount" after the filename before the .jpeg extension ::
 				imgcount++;
 				String tempName = imgfile.getOriginalFilename();
 				String imageFileType = tempName.substring(tempName.indexOf("."));
@@ -290,8 +301,8 @@ public class UserController {
 				
 				updatedContact.setImage(imageFileName);
 				
-				// Saving the actual image into server ::
-				Path imgSaveFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + imageFileName);
+			// Saving the actual image into server ::
+				Path imgSaveFilePath = Paths.get(uploadFilePath +File.separator + imageFileName);
 						System.out.println("imgSaveFilePath : " +imgSaveFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
 			
 				Files.copy(imgfile.getInputStream(), imgSaveFilePath, StandardCopyOption.REPLACE_EXISTING);		// {input , target , options-how to write whether replace }
