@@ -7,6 +7,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -33,17 +34,22 @@ public class EmailService {
 			//	mailSender.send(mail);
 			
 			MimeMessage mail = mailSender.createMimeMessage();
-			MimeMessageHelper mailHelper = new MimeMessageHelper(mail);
+			MimeMessageHelper mailHelper = new MimeMessageHelper(mail, true);
 			
 			String receiverName = receiverMail.substring(0,receiverMail.indexOf('@'));
 			String textMessage = "<p>Hi "+receiverName +" , </p>";
 				textMessage += "<h3>Please submit this OTP to your Smart-Contact-Manager verification page !</h3>";
 				textMessage += "<h1>OTP is : "+OTP+"</h1>";
+				//textMessage += "<hr><img src='cid:contact_logo'>";
 				
 			mailHelper.setFrom(fromEmail, "Rahul Info");
 			mailHelper.setTo(receiverMail);
 			mailHelper.setSubject("Spring OTP Verification Mail");
 			mailHelper.setText(textMessage, true);
+			
+			// Sent Inline photo :
+			ClassPathResource resource = new ClassPathResource("/static/img/contact_logo.jpg");
+			mailHelper.addInline("contact_logo", resource);
 			
 			mailSender.send(mail);
 			System.out.println("Mail sent to : "+receiverMail);
