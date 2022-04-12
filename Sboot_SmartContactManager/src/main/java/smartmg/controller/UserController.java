@@ -336,7 +336,7 @@ public class UserController {
 	}	
 	
 	
-//====================# Showing Onuser Profile Detail :========================================	
+//====================# Showing Onuser Profile Detail :=====================================	
 	
 	@GetMapping("/profile")
 	public String onuserProfile()
@@ -345,7 +345,7 @@ public class UserController {
 		return "normal/profile";
 	}
 	
-//====================# Showing Change password page :===========================	
+//====================# Showing Change password page :======================================
 	
 	@GetMapping("/settings")
 	public String openSettings()
@@ -353,7 +353,7 @@ public class UserController {
 		return "normal/settings";
 	}
 
-//====================# Changing the password - from Settings handler page :===========================	
+//====================# Changing the password - from Settings handler page :=================	
 	
 	@PostMapping("/change-password")
 	public String changePassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, HttpSession session) 
@@ -367,12 +367,13 @@ public class UserController {
 			this.userRepository.save(this.onuser);
 			
 			session.setAttribute("message", new ResponseMessage("Password Changed Successfully !! ", "alert-success"));
+			return "redirect:/user/index";
 		}
-		else {
+		else 
+		{
 			session.setAttribute("message", new ResponseMessage("Wrong old password ! " , "alert-danger"));
 			return "redirect:/user/settings";
 		}
-		return "redirect:/user/index";
 	}
 	
 }
