@@ -15,6 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -42,6 +43,9 @@ public class UserController {
 	
 	@Autowired
 	private ContactRepository contactRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	private int imgcount;
 	
@@ -341,14 +345,35 @@ public class UserController {
 		return "normal/profile";
 	}
 	
-//====================# Changing the password - from Settings handler page :===========================	
+//====================# Showing Change password page :===========================	
 	
 	@GetMapping("/settings")
 	public String openSettings()
 	{
 		return "normal/settings";
 	}
+
+//====================# Changing the password - from Settings handler page :===========================	
 	
+	@PostMapping("/change-password")
+	public String changePassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, HttpSession session) 
+	{
+		System.out.println("oldPassword : "+oldPassword);
+		System.out.println("newPassword : "+newPassword);
+		
+		if(this.passwordEncoder.matches(oldPassword, this.onuser.getPassword()))
+		{
+			this.onuser.setPassword(this.passwordEncoder.encode(newPassword));
+			this.userRepository.save(this.onuser);
+			
+			session.setAttribute("message", new ResponseMessage("Password Changed Successfully !! ", "alert-success"));
+		}
+		else {
+			session.setAttribute("message", new ResponseMessage("Wrong old password ! " , "alert-danger"));
+			return "redirect:/user/settings";
+		}
+		return "redirect:/user/index";
+	}
 	
 }
 

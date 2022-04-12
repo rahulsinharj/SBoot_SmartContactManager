@@ -17,19 +17,20 @@
 
 						<div class="col-md-8 offset-md-2 rounded">
 
-						<form action="">
+						<form th:action="@{/user/change-password}" method="post">
+						
 							<!--============[Old Password Filed]:============-->
 							<div class="mb-3">
 							    <label for="oldPass_field" class="form-label">Enter old password</label>
-							    <input type="text" class="form-control" id="oldPass_field" name="oldPassword" required autofocus
-							     	 	placeholder="Enter old password here" aria-describedby="emailHelp">
+							    <input type="password" class="form-control" id="oldPass_field" name="oldPassword" required autofocus
+							     	 	placeholder="Enter old password here">
 							</div>
 							
 							<!--============[New Password Filed]:============-->
 							<div class="mb-3">
 							    <label for="newPass_field" class="form-label">Enter new password</label>
-							    <input type="text" class="form-control" id="newPass_field" name="newPassword" required
-							     	 	placeholder="Enter new password here" aria-describedby="emailHelp">
+							    <input type="password" class="form-control" id="newPass_field" name="newPassword" required
+							     	 	placeholder="Enter new password here">
 							</div>
 							
 							<div class="container text-center my-3">
