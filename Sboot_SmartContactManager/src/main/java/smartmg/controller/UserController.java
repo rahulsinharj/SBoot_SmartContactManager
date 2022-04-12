@@ -341,6 +341,14 @@ public class UserController {
 		return "normal/profile";
 	}
 	
+//====================# Changing the password - from Settings handler page :===========================	
+	
+	@GetMapping("/settings")
+	public String openSettings()
+	{
+		return "normal/settings";
+	}
+	
 	
 }
 

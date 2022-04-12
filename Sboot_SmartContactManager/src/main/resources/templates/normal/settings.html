@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="/normal/userbase::layout(~{::title},~{::section})">
+					<!-- Iska matlab ki "base.html" me iss "home.html" ka "section" wala portion bhej rahe hai  -->
+<head>
+<meta charset="ISO-8859-1">
+<title>User Settings</title>
+</head>
+<body>
+
+	<section>
+
+		<div class="card mx-1">
+			<div class="card-body">
+				<h1 class="text-center text-secondary">Settings</h1>
+
+					<div class="row">
+
+						<div class="col-md-8 offset-md-2 rounded">
+
+						<form action="">
+							<!--============[Old Password Filed]:============-->
+							<div class="mb-3">
+							    <label for="oldPass_field" class="form-label">Enter old password</label>
+							    <input type="text" class="form-control" id="oldPass_field" name="oldPassword" required autofocus
+							     	 	placeholder="Enter old password here" aria-describedby="emailHelp">
+							</div>
+							
+							<!--============[New Password Filed]:============-->
+							<div class="mb-3">
+							    <label for="newPass_field" class="form-label">Enter new password</label>
+							    <input type="text" class="form-control" id="newPass_field" name="newPassword" required
+							     	 	placeholder="Enter new password here" aria-describedby="emailHelp">
+							</div>
+							
+							<div class="container text-center my-3">
+								<button type="submit" class="btn bg-primary text-white" title="Change the password !">Change</button> 
+								<button type="reset" class="btn btn-secondary" title="Reset your entries !">Reset</button>
+							</div>
+							
+						</form>
+							
+						</div>
+							
+						
+					</div>
+			</div>
+		</div>
+
+		<script>
+	        $(document).ready(() => {
+	          $(".item").removeClass("active");
+	          $("#settings-page").addClass("active");
+	        });
+      	</script>
+		
+	</section>
+
+
+</body>
+</html>
