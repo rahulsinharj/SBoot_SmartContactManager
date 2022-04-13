@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Random;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import smartmg.entity.Contact;
 import smartmg.entity.User;
 import smartmg.service.EmailService;
 import smartmg.util.HelperUtil;
+import smartmg.util.ResponseMessage;
 
 @Controller
 public class UtilityController {
@@ -53,7 +56,7 @@ public class UtilityController {
 		
 	}
 
-//====================# Forgot Password Handler :============================================	
+//====================# Showing Forgot Password :============================================	
 	
 	@RequestMapping("/forgot")
 	public String openForgotForm()
@@ -64,7 +67,7 @@ public class UtilityController {
 //====================# Forgot Password Handler :============================================	
 			
 	@PostMapping("/send-otp")
-	public String sendOTP(@RequestParam("email") String email)
+	public String sendOTP(@RequestParam("email") String email, HttpSession session)
 	{
 		System.out.println("Forgot Email : "+email);
 		
@@ -72,11 +75,37 @@ public class UtilityController {
 		
 	// Program for sending OTP to email ::	
 		
-		this.emailService.sendEmail(email, OTP);
+		User userCheck = this.userRepository.findByEmail(email);
+		System.out.println("userCheck : "+userCheck);
 		
+		if(userCheck != null) 					// Matlab ki ye ek registered user hai, since verifying from DB
+		{
+			session.setAttribute("myotp", OTP);		// Storing OTP & EMAIL in session
+			session.setAttribute("myemail", email);	
+			
+			boolean emailSentStatus = this.emailService.sendEmail(email, userCheck.getName(), OTP);
+			if(emailSentStatus) {				// Matlab ki OTP bhej chuka hai successfully
+				return "verify_otp";
+			}	
+			else {
+				session.setAttribute("message", new ResponseMessage("Email unable to sent! Please try again later ! " , "alert-danger"));
+				return "redirect:/forgot" ;
+			}
+		}
+		else {
+			session.setAttribute("message", new ResponseMessage("Sorry! You are not a registered user ! " , "alert-danger"));
+			return "redirect:/forgot" ;
+		}
 		
-		return "verify_otp";
 	}
-	
+
+//====================# Verify OTP Handler :============================================	
+			
+	@PostMapping("/verify-otp")
+	public String verifyOtp(@RequestParam("otp") int otp)
+	{
+		System.out.println("OTP entered by user : "+otp);
+		return "";
+	}
 		
 }

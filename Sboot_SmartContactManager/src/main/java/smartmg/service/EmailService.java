@@ -17,13 +17,14 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
 	@Value("${spring.mail.username}")
-	private String fromEmail;
+	private String emailFrom;
 	
 	@Autowired
 	private JavaMailSender mailSender;
 	
-	public void sendEmail(String receiverMail, int OTP) 
+	public boolean sendEmail(String emailTo, String receiverName, int OTP) 
 	{
+		boolean emailSentStatus = false;
 		try 
 		{
 			//	SimpleMailMessage mail = new SimpleMailMessage();
@@ -33,33 +34,42 @@ public class EmailService {
 			//		mail.setText(textMessage);
 			//	mailSender.send(mail);
 			
-			MimeMessage mail = mailSender.createMimeMessage();
-			MimeMessageHelper mailHelper = new MimeMessageHelper(mail, true);
+			MimeMessage myMail = mailSender.createMimeMessage();
+			MimeMessageHelper mailHelper = new MimeMessageHelper(myMail, true);
 			
-			String receiverName = receiverMail.substring(0,receiverMail.indexOf('@'));
-			String textMessage = "<p>Hi "+receiverName +" , </p>";
-				textMessage += "<h3>Please submit this OTP to your Smart-Contact-Manager verification page !</h3>";
-				textMessage += "<h1>OTP is : "+OTP+"</h1>";
-				//textMessage += "<hr><img src='cid:contact_logo'>";
+			//String receiverName = emailTo.substring(0,emailTo.indexOf('@'));
+			
+			String textMessage = "<p>Hi "+receiverName +" , </p>"
+								+ "<div style='border:1px solid #e2e2e2; padding:20px'>"
+								+ "<h3>Please submit this OTP to your Smart-Contact-Manager verification page !</h3>"
+								+ "<h1>OTP is : "+OTP+"</h1>"
+								+ "</div>"; 
 				
-			mailHelper.setFrom(fromEmail, "Rahul Info");
-			mailHelper.setTo(receiverMail);
+				//textMessage += "<img src='cid:contact_logo' style='height: 150px; border-radius:18%;'>";
+				
+			mailHelper.setFrom(emailFrom, "Rahul Info");
+			mailHelper.setTo(emailTo);
 			mailHelper.setSubject("Spring OTP Verification Mail");
 			mailHelper.setText(textMessage, true);
 			
-			// Sent Inline photo :
-			ClassPathResource resource = new ClassPathResource("/static/img/contact_logo.jpg");
-			mailHelper.addInline("contact_logo", resource);
+		// Sent Inline photo :
+			//ClassPathResource resource = new ClassPathResource("/static/img/contact_logo.jpg");
+			//mailHelper.addInline("contact_logo", resource);
 			
-			mailSender.send(mail);
-			System.out.println("Mail sent to : "+receiverMail);
+			mailSender.send(myMail);
+			System.out.println("Mail sent to : "+emailTo);
+			emailSentStatus = true;
 			
 		} 
 		catch (MessagingException e) {
 			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
+			return emailSentStatus;
+		} 
+		catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+			return emailSentStatus;
 		}
 		
+		return emailSentStatus ;
 	}
 }
