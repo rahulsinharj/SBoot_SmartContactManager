@@ -17,7 +17,7 @@ public class HelperUtil {
 			otpStr += random.nextInt(10);
 		}
 		int otp = Integer.parseInt(otpStr); 
-		System.out.println("OTP : "+otp);
+		System.out.println("OTP generated : "+otp);
 		
 		return otp;	
 	}
