@@ -3,6 +3,7 @@ package smartmg.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ import smartmg.util.HelperUtil;
 import smartmg.util.ResponseMessage;
 
 @Controller
-public class EmailController {
+public class EmailForgotController {
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -25,7 +26,9 @@ public class EmailController {
 	
 	@Autowired
 	private EmailService emailService;
-	
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 //====================# Showing Forgot Password :============================================	
 	
@@ -81,7 +84,6 @@ public class EmailController {
 		System.out.println("OTP entered by user : "+enteredOtp);
 		
 		int genOtp = (int)session.getAttribute("genOtp");
-		String myemail = (String)session.getAttribute("myemail");
 		
 		if(enteredOtp == genOtp)
 		{
@@ -96,4 +98,15 @@ public class EmailController {
 		
 	}
 		
+//====================# Changing passsord after email and OTP verification :============================================	
+	
+	@PostMapping("/change-password")	
+	public String changePassword(@RequestParam("newPassword") String newPassword, HttpSession session)
+	{
+		String myemail = (String)session.getAttribute("myemail");
+		System.out.println("myemail : "+myemail);
+		
+		return "";
+	}
+	
 }
