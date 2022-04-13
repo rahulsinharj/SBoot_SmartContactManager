@@ -24,7 +24,7 @@ import smartmg.util.HelperUtil;
 import smartmg.util.ResponseMessage;
 
 @Controller
-public class UtilityController {
+public class EmailController {
 	
 	@Autowired
 	private UserRepository userRepository;
