@@ -43,8 +43,8 @@ public class User {
 	@Column(length = 500)
 	private String about;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-	private List<Contact> contacts = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true) 	// orphanRemoval is an entirely ORM-specific thing. It marks "child" entity to be removed when it's no longer referenced from the "parent" entity.
+	private List<Contact> contacts = new ArrayList<>();								// e.g. when you remove the child entity from the corresponding collection of the parent entity.  
 	
 	public User() {
 		super();
