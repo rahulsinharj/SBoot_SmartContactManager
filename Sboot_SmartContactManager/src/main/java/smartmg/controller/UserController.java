@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import smartmg.dao.ContactRepository;
@@ -335,6 +338,21 @@ public class UserController {
 		return "redirect:/user/contact/"+updatedContact.getcId();
 	}	
 	
+//====================# Search Handler :=====================================================			
+	
+	@GetMapping("/search/{query}")
+	@ResponseBody
+	public ResponseEntity<?> search(@PathVariable("query") String query, Principal principal)
+	{
+		User onuser = userRepository.findByEmail(principal.getName());
+			
+		//	System.out.println("Query : "+query);
+			
+		List<Contact> searchContacts = this.contactRepository.findByNameContainingAndUser(query, onuser);
+			
+		return ResponseEntity.ok(searchContacts);
+			
+	}	
 	
 //====================# Showing Onuser Profile Detail :=====================================	
 	

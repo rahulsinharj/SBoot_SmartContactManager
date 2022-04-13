@@ -1,23 +1,14 @@
 package smartmg.controller;
 
-import java.security.Principal;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import smartmg.dao.ContactRepository;
 import smartmg.dao.UserRepository;
-import smartmg.entity.Contact;
 import smartmg.entity.User;
 import smartmg.service.EmailService;
 import smartmg.util.HelperUtil;
@@ -30,29 +21,11 @@ public class EmailController {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private ContactRepository contactRepository;
-	
-	@Autowired
 	private HelperUtil helperUtil;
 	
 	@Autowired
 	private EmailService emailService;
 	
-//====================# Search Handler :=====================================================			
-	
-	@GetMapping("/search/{query}")
-	@ResponseBody
-	public ResponseEntity<?> search(@PathVariable("query") String query, Principal principal)
-	{
-		User onuser = userRepository.findByEmail(principal.getName());
-		
-		//	System.out.println("Query : "+query);
-		
-		List<Contact> searchContacts = this.contactRepository.findByNameContainingAndUser(query, onuser);
-		
-		return ResponseEntity.ok(searchContacts);
-		
-	}
 
 //====================# Showing Forgot Password :============================================	
 	
