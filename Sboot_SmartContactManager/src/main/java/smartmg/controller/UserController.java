@@ -114,25 +114,25 @@ public class UserController {
 						System.out.println("imageFileName : "+imageFileName);
 				
 				contact.setImage(imageFileName);
-
+	
+	// Saving img into location :: 	"\src\main\resources\static\img\"
+				
+/*				final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
+						
+				Path imgSaveFilePath = Paths.get(uploadFilePath + File.separator + imageFileName);
+					System.out.println("imgSaveFilePath : " + imgSaveFilePath);			//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\src\main\resources\static\img\baloon.jpeg
+*/
+				
 	// Saving img into location :: 	"\target\classes\static\img\"		
 				
-/*				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
+				File uploadFilePath = new ClassPathResource("static/img").getFile();	//	"\target\classes\static\img\"
 					System.out.println("uploadFilePath : " +uploadFilePath);
 				
 			//	Path imgSaveFilePath = Paths.get(uploadFilePath + File.separator + imgfile.getOriginalFilename());
 				Path imgSaveFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + imageFileName);
 				
 					System.out.println("imgSaveFilePath : " +imgSaveFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
-*/
-	
-	// Saving img into location :: 	"\src\main\resources\static\img\"
-				
-				final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
-						
-				Path imgSaveFilePath = Paths.get(uploadFilePath + File.separator + imageFileName);
-					System.out.println("imgSaveFilePath : " + imgSaveFilePath);			//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\src\main\resources\static\img\baloon.jpeg
-				
+
 				Files.copy(imgfile.getInputStream(), imgSaveFilePath, StandardCopyOption.REPLACE_EXISTING);		// {input , target , options-how to write whether replace }
 				
 			}
@@ -216,13 +216,13 @@ public class UserController {
 			if(this.onuser.getId()==contact.getUser().getId())
 			{
 			// Removing that contact's Image from /img folder
-				//File uploadFilePath = new ClassPathResource("static/img").getFile();									//	"\target\classes\static\img\"
-				//Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + contact.getImage());
 				
-				final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
-				Path imgDelFilePath = Paths.get(uploadFilePath + File.separator + contact.getImage());
-						System.out.println("File deleted at imgDelPath : " +imgDelFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
+				// final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
+				// Path imgDelFilePath = Paths.get(uploadFilePath + File.separator + contact.getImage());
+				//		System.out.println("File deleted at imgDelPath : " +imgDelFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
 		
+				File uploadFilePath = new ClassPathResource("static/img").getFile();									//	"\target\classes\static\img\"
+				Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + contact.getImage());
 				
 				System.out.println("File deleted at imgDelPath : " +imgDelFilePath);		//	 E:\Stu\Code Files\GIT Eclipse Files\SBoot_SmartContactManager\Sboot_SmartContactManager\target\classes\static\img\facebook.png
 		
@@ -286,12 +286,12 @@ public class UserController {
 			if(!imgfile.isEmpty()) 
 			{
 			// Delete old profile pic  ::
+
+				// final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
+				// Path imgDelFilePath = Paths.get(uploadFilePath + File.separator + oldContact.getImage());
 				
-				// File uploadFilePath = new ClassPathResource("static/img").getFile();									//	"\target\classes\static\img\"
-				// Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + oldContact.getImage());
-				
-				final String uploadFilePath = Paths.get("src/main/resources/static/img").toAbsolutePath().toString();	// 	"\src\main\resources\static\img\"
-				Path imgDelFilePath = Paths.get(uploadFilePath + File.separator + oldContact.getImage());
+				File uploadFilePath = new ClassPathResource("static/img").getFile();									//	"\target\classes\static\img\"
+				Path imgDelFilePath = Paths.get(uploadFilePath.getAbsolutePath()+File.separator + oldContact.getImage());
 				
 				Files.deleteIfExists(imgDelFilePath);
 				
