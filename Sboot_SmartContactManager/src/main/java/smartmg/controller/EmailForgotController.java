@@ -104,9 +104,13 @@ public class EmailForgotController {
 	public String changePassword(@RequestParam("newPassword") String newPassword, HttpSession session)
 	{
 		String myemail = (String)session.getAttribute("myemail");
-		System.out.println("myemail : "+myemail);
 		
-		return "";
+		User user = this.userRepository.findByEmail(myemail);
+		user.setPassword(this.passwordEncoder.encode(newPassword));
+		this.userRepository.save(user);
+		session.setAttribute("message", new ResponseMessage("Password Successfully changed for your Email ! ", "alert-success"));
+		
+		return "redirect:/login";
 	}
 	
 }
