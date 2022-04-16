@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +39,7 @@ import smartmg.entity.User;
 import smartmg.util.ResponseMessage;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("user")
 public class UserController {
 
 	@Autowired
@@ -54,6 +55,9 @@ public class UserController {
 	
 	private User onuser;		// Logged in User
 
+//	@Value("${imgUpload.path}")						// For saving in production, we can use::  Path imgSaveFilePath = Paths.get(imgUploadPath + File.separator + imageFileName);
+//	private String imgUploadPath;
+	
 //====================# 1ST-Method for adding common data to response :==========================	
 	@ModelAttribute
 	public void addCommonData(Model model, Principal principal)
@@ -74,6 +78,7 @@ public class UserController {
 	@RequestMapping("/index")
 	public String dashboard()
 	{
+		System.out.println("Inside /index");
 		return "normal/user_dashboard";				// that means template folder ke inside >> "normal" folder ke andar "user_dashboard.html" milega 
 	}
 	
@@ -82,6 +87,7 @@ public class UserController {
 	@GetMapping("/add-contact")
 	public String openAddContactForm(Model model) 
 	{
+		System.out.println("Inside /add-contact");
 		model.addAttribute("contact",new Contact());
 		return "normal/add_contact_form";
 	}
@@ -359,6 +365,7 @@ public class UserController {
 	@GetMapping("/profile")
 	public String onuserProfile()
 	{
+		System.out.println("Inside /profile");
 		// Since user has been returned in each and every field , so now we only have to return "normal/profile .html" page.
 		return "normal/profile";
 	}
@@ -368,6 +375,7 @@ public class UserController {
 	@GetMapping("/settings")
 	public String openSettings()
 	{
+		System.out.println("Inside /settings");
 		return "normal/settings";
 	}
 
