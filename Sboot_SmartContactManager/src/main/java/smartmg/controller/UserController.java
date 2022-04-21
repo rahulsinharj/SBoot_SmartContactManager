@@ -70,6 +70,7 @@ public class UserController {
 		
 		System.out.println("USER Info : " + onuser);
 		model.addAttribute("user", onuser);			// By this line, "user" obj will be accessible in all user/index html pages 
+//		model.addAttribute("imgUploadPath",imgUploadPath);
 	}
 	
 	

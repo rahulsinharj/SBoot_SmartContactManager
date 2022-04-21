@@ -26,7 +26,7 @@ const contactSearch = ()=> {
 	    console.log(query);
 	
 	    // Sending request to server::
-	    let url = `http://localhost:8080/search/${query}`;
+	    let url = `http://localhost:8282/user/search/${query}`;
 	    
 	    fetch(url).then((response)=>{
 	      return response.json();
