@@ -47,7 +47,7 @@ public class EmailService {
 				
 				//textMessage += "<img src='cid:contact_logo' style='height: 150px; border-radius:18%;'>";
 				
-			mailHelper.setFrom(emailFrom, "Rahul Info");
+			mailHelper.setFrom(emailFrom, "SmartContactManager Support Team");
 			mailHelper.setTo(emailTo);
 			mailHelper.setSubject("Spring OTP Verification Mail");
 			mailHelper.setText(textMessage, true);
