@@ -25,7 +25,7 @@ public class Contact {
 	private long phone;
 	private String image;
 	
-	@Column(length = 1000)
+	@Column(length = 5000)
 	private String description;
 	
 	@ManyToOne
