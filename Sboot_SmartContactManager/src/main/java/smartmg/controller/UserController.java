@@ -165,7 +165,7 @@ public class UserController {
 	
 //====================# Show Contact Form :=================================================
 	/*
-		Per Page = 5[n]
+		Per Page = 4[n]
 		Current Page = 0[page]
 	*/
 	
@@ -178,7 +178,7 @@ public class UserController {
 		// List<Contact> contacts = this.contactRepository.findContactsByUser(onuser.getId());		// Getting all contacts without Pagination.
 		
 		Pageable pageable = PageRequest.of(page, 4);		// Pageable asks for two information : 1) Current Page- page, 2) Contact Per Page- eg-4
-		Page<Contact> pageContacts = this.contactRepository.findContactsByUser(this.onuser.getId(), pageable);
+		Page<Contact> pageContacts = this.contactRepository.getContactsByUserid(this.onuser.getId(), pageable);
 		
 		model.addAttribute("allContacts", pageContacts);	// Sending this model to "view_contact.html" page.
 		model.addAttribute("currentPage", page);	
