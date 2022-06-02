@@ -34,29 +34,31 @@ public class EmailService {
 			//		mail.setText(textMessage);
 			//	mailSender.send(mail);
 			
-			MimeMessage myMail = mailSender.createMimeMessage();
-			MimeMessageHelper mailHelper = new MimeMessageHelper(myMail, true);
+			
+			MimeMessage mimeMessage = mailSender.createMimeMessage();
+			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 			
 			//String receiverName = emailTo.substring(0,emailTo.indexOf('@'));
 			
 			String textMessage = "<p>Hi "+receiverName +" , </p>"
 								+ "<div style='border:1px solid #e2e2e2; padding:20px'>"
-								+ "<h3>Please submit this OTP to your Smart-Contact-Manager verification page !</h3>"
+								+ "<h3>Please submit this OTP to your @Smart-Contact-Manager verification page !</h3>"
 								+ "<h1>OTP is : "+OTP+"</h1>"
+//								+ "<h3>Thank you from @Smart Contact Manager Team ! Have a nice day !</h3>"
 								+ "</div>"; 
 				
 				//textMessage += "<img src='cid:contact_logo' style='height: 150px; border-radius:18%;'>";
 				
-			mailHelper.setFrom(emailFrom, "SmartContactManager Support Team");
-			mailHelper.setTo(emailTo);
-			mailHelper.setSubject("Spring OTP Verification Mail");
-			mailHelper.setText(textMessage, true);
+			mimeMessageHelper.setFrom(emailFrom, "SmartContactManager Support Team");
+			mimeMessageHelper.setTo(emailTo);
+			mimeMessageHelper.setSubject("Spring OTP Verification Mail");
+			mimeMessageHelper.setText(textMessage, true);
 			
 		// Sent Inline photo :
 			//ClassPathResource resource = new ClassPathResource("/static/img/contact_logo.jpg");
 			//mailHelper.addInline("contact_logo", resource);
 			
-			mailSender.send(myMail);
+			mailSender.send(mimeMessage);
 			System.out.println("Mail sent to : "+emailTo);
 			emailSentStatus = true;
 			

@@ -25,7 +25,7 @@ public interface ContactRepository extends JpaRepository<Contact, Integer> {
 	 		2) Contact Per Page - 5
 	*/ 
 	
-	@Query("from Contact as c where c.user.id = :userId ORDER BY cId DESC")
+	@Query("from Contact as c where c.user.id = :userId ORDER BY cId")		// ORDER BY cId DESC
 	public Page<Contact> getContactsByUserid(@Param("userId") int userId, Pageable pageable);		// Custom Query method
 
 	// searching
