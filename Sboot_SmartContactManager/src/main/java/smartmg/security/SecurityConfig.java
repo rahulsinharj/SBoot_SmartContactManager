@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -71,6 +72,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {				// Yaha p
 								.defaultSuccessUrl("/user/index")			// defaultSuccessUrl() - is the landing page after a successful login.
 //								.failureUrl("/loginfail")					// failureUrl() - is the landing page after an unsuccessful login
 								.and().csrf().disable();					// For disabling this we should mention this line inside login page : <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+		 
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+				         		.invalidSessionUrl("/login");
+			
+		
 	}
 	
 } 
