@@ -20,7 +20,7 @@ public class EmailService {
 	private String emailFrom;
 	
 	@Autowired
-	private JavaMailSender mailSender;
+	private JavaMailSender javaMailSender;
 	
 	public boolean sendEmail(String emailTo, String receiverName, int OTP) 
 	{
@@ -35,7 +35,7 @@ public class EmailService {
 			//	mailSender.send(mail);
 			
 			
-			MimeMessage mimeMessage = mailSender.createMimeMessage();
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 			
 			//String receiverName = emailTo.substring(0,emailTo.indexOf('@'));
@@ -58,7 +58,7 @@ public class EmailService {
 			//ClassPathResource resource = new ClassPathResource("/static/img/contact_logo.jpg");
 			//mailHelper.addInline("contact_logo", resource);
 			
-			mailSender.send(mimeMessage);
+			javaMailSender.send(mimeMessage);
 			System.out.println("Mail sent to : "+emailTo);
 			emailSentStatus = true;
 			
